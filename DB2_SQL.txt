@@ -15,6 +15,9 @@
 2. 查询表空间状态
 db2 SELECT TBSP_NAME, TBSP_USABLE_PAGES, TBSP_USED_PAGES FROM SYSIBMADM.SNAPTBSP_PART
 
+列出多有表空间的详细信息
+#db2 list tablespaces show detail
+
 扩大单个表空间(5000指的是页数)
 db2 "ALTER TABLESPACE TBS_FCS_DEFAULT RESIZE (ALL 50000)"
 
@@ -49,9 +52,6 @@ DELETE  from DB2NC.TBL_STL_OD_FLUX_20170101 WHERE TBL_STL_OD_FLUX_20170101.STL_D
 
 更新表数据：
 UPDATE TBL_STL_FILE_CTL SET PROC_STAT = 3
-
-
-
 
 db2 number 有没有这个字段
 
@@ -106,3 +106,11 @@ Progress Monitoring:
       Completed Work             = 0 bytes
       Start Time                 = Not Started
 
+6. 查看实例配置文件
+# db2 get dbm cfg
+
+7. 查看数据库配置参数信息
+# db2 get db cfg for fcsdb
+
+8. 查看数据库的名字	
+# db2 list db directory
