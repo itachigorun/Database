@@ -39,8 +39,7 @@ db2 => get snapshot for locks on databasename
 或者
 list application for database yourdatabasename show detail
 看看应用程序执行的情况
-断掉连接：
-通过
+断掉连接：通过
 force application all //强行终止所有连接
 terminate //清除所有db2的后台进程
 将所有的进程全部清除
