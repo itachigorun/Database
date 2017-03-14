@@ -1,2 +1,23 @@
 # itachigorun 
 
+1.查询表空间
+#sqlplus / as sysdba
+SQL> select tablespace_name from dba_tablespaces;
+
+TABLESPACE_NAME
+------------------------------
+SYSTEM
+SYSAUX
+UNDOTBS1
+TEMP
+USERS
+TBS_FCS_SUM
+
+已选择6行。
+
+2. 
+SQL> drop tablespace TBS_FCS_SUM including contents and datafiles;
+
+SQL> DROP TABLESPACE TBS_FCS_SUM INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;
+
+
