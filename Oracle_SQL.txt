@@ -1,5 +1,5 @@
 # itachigorun 
-# 
+ 
 
 1.查询表空间
 #sqlplus / as sysdba
