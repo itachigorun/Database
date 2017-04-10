@@ -15,6 +15,7 @@ TURNER:1500
 ADAMS:1100
 ||可以连接多个字符串。
 例如：SELECT name || ':' || sal FROM emp;
+
 2.LENGTH
 length(char)用于返回参数字符串的长度，如果字符类型是VARCHAR2，返回字符的实际长度，如果字符类型是CHAR，长度还包括后补的空格。
 例如：SELECT name, LENGTH(name) FROM emp;  
@@ -23,3 +24,57 @@ SMITH 5
 ALLEN 5
 WARD  4
 JONES 5
+
+3.UPPER、LOWER和INITCAP
+这三个函数全部都是英文的大小写转换函数，用来转换字符的大小写：
+UPPER(char)用于将字符转换为大写形式
+LOWER(char)用于将字符转换为小写形式
+INITCAP(char)用于将字符串每个单词的首字符大写，其他字符小写，单词之间用空格和非字母分隔
+如果这三个函数的输入参数是NULL值，仍然返回NULL值。
+SELECT UPPER('hello world'), LOWER('HELLO WORld'), INITCAP('hello world') FROM dual;
+将列出参数”hello world"的大写、小写、和首字符大写的形式。一般用来查询数据表中不确定大小写的情况。
+
+4.TRIM、LTRIM、RTRIM
+这三个TRIM函数的作用都是截去子字符串。
+TRIM(c2 from c1)表示从c1的前后截去c2
+LTRIM(c1,c2)表示从c1的左边(Left)截去c2
+RTRIM(c1,c2)表示从c1的右边(Right)截去c2
+例如：SELECT TRIM('e' from 'elite') as t1,
+      LTRIM('elite','e') as t2,
+      RTRIM('elite','e') as t3
+      FROM DUAL;
+结果：
+t1   t2    t3
+lit  lite  elit
+其中TRIM，经常用来去掉字符串前后的空格。
+
+5.LAPD、RPAD
+PAD意即补丁，LPAD和RPAD两个函数都叫做补位函数，LPAD表示 LEFT PAD,在左边打补丁，RPAD表示RIGHT PAD ,在右边打补丁。
+LPAD(char1,n,char2) 左补位函数
+RPAD(char1,n,char2) 右补位函数
+参数含义：在字符串函数char1的左端或右端用char2补足到n位，其中参数char2可重复多次。例如在EMP表中使用左补位，将sal
+用$补齐6位，运行结果：
+ENAME   SAL
+SMITH   $$$800
+ALLEN   $$$1600
+WARD    $$$1250
+JONES   $$$2975
+
+6.SUBSTR表示在一个字符串中截取字串
+SUBSTR(char,m,n)
+用于返回char中从m位开始取n个字符的字串，字符串的首位计数从1开始。
+如果m=0，则从首字符开始，如果m取负数，则从尾部开始
+如果没有设置n，或者n的长度超过了char的长度，则取到字符串末尾为止
+SELECT SUBSTR('Doctor Who travels in TARDIS', 8, 25) as substr FROM DUAL
+结果：
+substr
+Who travels in TARDIS
+
+7.INSTR用来返回在一个字符串中字串的位置
+INSTR(char1,char2,n,m)
+返回字串char2在源字符串char1中的位置
+从n的位置开始搜索，没有指定n，从第一个字符开始搜索
+m用于制定字串的第m次出现次数，如果不指定取值1
+如果在char1中没有找到字串char2，返回0
+例如：SELECT INSTR('Doctor Who','Who') words FROM DUAL;
+结果返回8
