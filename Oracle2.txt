@@ -1,0 +1,25 @@
+字符串函数
+1.CONCAT和"||"
+CONCAT(char1,char2)用于返回两个字符串链接后的结果。
+例如：SELECT CONCAT(CONCAT(name,':'),sal)FROM emp;
+SMITH:800
+ALLEN:1600
+WARD:1250
+JONES:2975
+MARTIN:1250
+BLAKE:2850
+CLARK:2450
+SCOTT:3000
+KING:5000
+TURNER:1500
+ADAMS:1100
+||可以连接多个字符串。
+例如：SELECT name || ':' || sal FROM emp;
+2.LENGTH
+length(char)用于返回参数字符串的长度，如果字符类型是VARCHAR2，返回字符的实际长度，如果字符类型是CHAR，长度还包括后补的空格。
+例如：SELECT name, LENGTH(name) FROM emp;  
+将列出name和name的字符串长度：
+SMITH 5
+ALLEN 5
+WARD  4
+JONES 5
