@@ -78,3 +78,19 @@ m用于制定字串的第m次出现次数，如果不指定取值1
 如果在char1中没有找到字串char2，返回0
 例如：SELECT INSTR('Doctor Who','Who') words FROM DUAL;
 结果返回8
+
+Oracle数值函数
+1.ROUND
+ROUND(n,m)用于将参数n按照m的数字要求四舍五入，其中：
+参数中的n可以是任何数字，指要被处理的数字
+m必须是整数
+m取正数则四舍五入到小数点后第m位
+m取0值则四舍五入到整数位
+m取负数，则四舍五入到小数点前m位
+m缺省，默认值是0
+例如：
+SELECT  ROUND(45.678,2) FROM DUAL; --45.68
+SELECT  ROUND(45.678,0) FROM DUAL; --46
+SELECT  ROUND(45.678,-1) FROM DUAL; --50
+
+
