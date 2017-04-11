@@ -7,17 +7,24 @@ Oralce提供了五种字符数据类型：char、nchar、varchar、varchar2、nvarchar。
     nvarchar2:使用国家字符集存储数据。其余和varchar2一样。
     varchar Oracle兼容，在Oracle中不建议用。
 
-    LONG：可认为是VARCHAR2的加长版，用来存储变长字符串，最多可达2GB字符串数据，但LONG类型有诸多限制，所以不建议使用:
+LONG：可认为是VARCHAR2的加长版，用来存储变长字符串，最多可达2GB字符串数据，但LONG类型有诸多限制，所以不建议使用:
     1.每个表只能有一个LONG类型列；
     2.不能作为主键或唯一约束；
     3.不能建立索引；
     4.不能出现在查询条件中；
     5.不能指定正则表达式；
     5.函数或存储过程不能接受LONG数据类型的参数。
-    CLOB用来存储定长或变长字符串，最多达4GB数据。
+CLOB用来存储定长或变长字符串，最多达4GB数据。
 
-    NUMBER:这种数据类型最多可存38位的数字
-    NUMBER(p,s)p表示精度（总长度），s表示小数且四舍五入 NUMBER(P)p表示长度。
+NUMBER:这种数据类型最多可存38位的数字,NUMBER(p,s)p表示精度（总长度），s表示小数且四舍五入 p缺省则默认为38，s缺省默认为0
+    NUMERIC(p,s):完全映射至NUMBER(p,s)
+    DECIMAL(p,s)或DEC(p,s):完全映射至NUMBER(p,s)
+    INTEGER或INT：完全映射至NUMBER(38)类型
+    SMALLINT:完全映射至NUMBER(38)类型
+    FLOAT(b):映射至NUMBER类型
+    DOUBLE PRECISION:映射至NUMBER类型
+    REAL:映射NUMBER类型
+
 
 日期类型 
     DATA类型，占7个字节。包括：世纪、年、月、日、时、分、秒  2017-04-10 19:37:53
