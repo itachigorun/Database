@@ -1,4 +1,4 @@
-字符串函数
+一、字符串函数
 1.CONCAT和"||"
 CONCAT(char1,char2)用于返回两个字符串链接后的结果。
 例如：SELECT CONCAT(CONCAT(name,':'),sal)FROM emp;
@@ -79,7 +79,7 @@ m用于制定字串的第m次出现次数，如果不指定取值1
 例如：SELECT INSTR('Doctor Who','Who') words FROM DUAL;
 结果返回8
 
-Oracle数值函数
+二、Oracle数值函数
 1.ROUND
 ROUND(n,m)用于将参数n按照m的数字要求四舍五入，其中：
 参数中的n可以是任何数字，指要被处理的数字
@@ -93,4 +93,28 @@ SELECT  ROUND(45.678,2) FROM DUAL; --45.68
 SELECT  ROUND(45.678,0) FROM DUAL; --46
 SELECT  ROUND(45.678,-1) FROM DUAL; --50
 
+2.TRUNC
+TRUNC(n,m)的功能是截取，其中n和m的定义和ROUND(n,m)相同，不同的是功能上按照截取的方式处理数字n。例如：
+SELECT TRUNC(45.678, 2) FROM DUAL; --45.67
+SELECT TRUNC(45.678, 0) FROM DUAL; --45
+SELECT TRUNC(45.678, -1) FROM DUAL; --40
 
+3.MOD
+MOD(m,n)是取模函数，返回m除以n后的余数，如果n为0则直接返回m。例如：
+--薪水值按1000取余数
+SELECT ename， sal, MOD(sal, 1000) FROM emp;
+SMITH    800    800
+ALLEN    1600   600
+WARD     1250   250
+JONES    2975   975
+MARTIN   1250   250
+
+4.CEIL和FLOOR
+CEIL(n)、FLOOR(n)这两个函数顾名思义，一个是天花板，就是取大于或等于n的最小整数值，一个是地板，就是取小于或等于n的
+最大整数值。例如：
+SELECT CEIL(45.678) FROM DUAL; --46
+SELECT FLOOR(45.678) FROM DUAL; --45
+
+三、Oracle日期操作
+1.DATE
+DATE和TIMESTAMP是ORACLE中最常用的日期类型。
