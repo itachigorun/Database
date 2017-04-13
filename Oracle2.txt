@@ -25,7 +25,12 @@ ALLEN 5
 WARD  4
 JONES 5
 
-3.UPPER¡¢LOWERºÍINITCAP
+3.LENGTHB
+length(str)·µ»Ø±í´ïÊ½ÖÐµÄ×Ö½ÚÊý
+SELECT LENGTHB('Hello World!') FROM DUAL; --·µ»Ø½á¹ûÎª12
+SELECT LENGTHB('ÕÅÈý') FROM DUAL; --·µ»Ø½á¹ûÎª6
+
+4.UPPER¡¢LOWERºÍINITCAP
 ÕâÈý¸öº¯ÊýÈ«²¿¶¼ÊÇÓ¢ÎÄµÄ´óÐ¡Ð´×ª»»º¯Êý£¬ÓÃÀ´×ª»»×Ö·ûµÄ´óÐ¡Ð´£º
 UPPER(char)ÓÃÓÚ½«×Ö·û×ª»»Îª´óÐ´ÐÎÊ½
 LOWER(char)ÓÃÓÚ½«×Ö·û×ª»»ÎªÐ¡Ð´ÐÎÊ½
@@ -34,7 +39,7 @@ INITCAP(char)ÓÃÓÚ½«×Ö·û´®Ã¿¸öµ¥´ÊµÄÊ××Ö·û´óÐ´£¬ÆäËû×Ö·ûÐ¡Ð´£¬µ¥´ÊÖ®¼äÓÃ¿Õ¸ñºÍ·Ç×
 SELECT UPPER('hello world'), LOWER('HELLO WORld'), INITCAP('hello world') FROM dual;
 ½«ÁÐ³ö²ÎÊý¡±hello world"µÄ´óÐ´¡¢Ð¡Ð´¡¢ºÍÊ××Ö·û´óÐ´µÄÐÎÊ½¡£Ò»°ãÓÃÀ´²éÑ¯Êý¾Ý±íÖÐ²»È·¶¨´óÐ¡Ð´µÄÇé¿ö¡£
 
-4.TRIM¡¢LTRIM¡¢RTRIM
+5.TRIM¡¢LTRIM¡¢RTRIM
 ÕâÈý¸öTRIMº¯ÊýµÄ×÷ÓÃ¶¼ÊÇ½ØÈ¥×Ó×Ö·û´®¡£
 TRIM(c2 from c1)±íÊ¾´Óc1µÄÇ°ºó½ØÈ¥c2
 LTRIM(c1,c2)±íÊ¾´Óc1µÄ×ó±ß(Left)½ØÈ¥c2
@@ -48,7 +53,7 @@ t1   t2    t3
 lit  lite  elit
 ÆäÖÐTRIM£¬¾­³£ÓÃÀ´È¥µô×Ö·û´®Ç°ºóµÄ¿Õ¸ñ¡£
 
-5.LAPD¡¢RPAD
+6.LAPD¡¢RPAD
 PADÒâ¼´²¹¶¡£¬LPADºÍRPADÁ½¸öº¯Êý¶¼½Ð×ö²¹Î»º¯Êý£¬LPAD±íÊ¾ LEFT PAD,ÔÚ×ó±ß´ò²¹¶¡£¬RPAD±íÊ¾RIGHT PAD ,ÔÚÓÒ±ß´ò²¹¶¡¡£
 LPAD(char1,n,char2) ×ó²¹Î»º¯Êý
 RPAD(char1,n,char2) ÓÒ²¹Î»º¯Êý
@@ -60,7 +65,7 @@ ALLEN   $$$1600
 WARD    $$$1250
 JONES   $$$2975
 
-6.SUBSTR±íÊ¾ÔÚÒ»¸ö×Ö·û´®ÖÐ½ØÈ¡×Ö´®
+7.SUBSTR±íÊ¾ÔÚÒ»¸ö×Ö·û´®ÖÐ½ØÈ¡×Ö´®
 SUBSTR(char,m,n)
 ÓÃÓÚ·µ»ØcharÖÐ´ÓmÎ»¿ªÊ¼È¡n¸ö×Ö·ûµÄ×Ö´®£¬×Ö·û´®µÄÊ×Î»¼ÆÊý´Ó1¿ªÊ¼¡£
 Èç¹ûm=0£¬Ôò´ÓÊ××Ö·û¿ªÊ¼£¬Èç¹ûmÈ¡¸ºÊý£¬Ôò´ÓÎ²²¿¿ªÊ¼
@@ -70,7 +75,7 @@ SELECT SUBSTR('Doctor Who travels in TARDIS', 8, 25) as substr FROM DUAL
 substr
 Who travels in TARDIS
 
-7.INSTRÓÃÀ´·µ»ØÔÚÒ»¸ö×Ö·û´®ÖÐ×Ö´®µÄÎ»ÖÃ
+8.INSTRÓÃÀ´·µ»ØÔÚÒ»¸ö×Ö·û´®ÖÐ×Ö´®µÄÎ»ÖÃ
 INSTR(char1,char2,n,m)
 ·µ»Ø×Ö´®char2ÔÚÔ´×Ö·û´®char1ÖÐµÄÎ»ÖÃ
 ´ÓnµÄÎ»ÖÃ¿ªÊ¼ËÑË÷£¬Ã»ÓÐÖ¸¶¨n£¬´ÓµÚÒ»¸ö×Ö·û¿ªÊ¼ËÑË÷
@@ -78,6 +83,10 @@ mÓÃÓÚÖÆ¶¨×Ö´®µÄµÚm´Î³öÏÖ´ÎÊý£¬Èç¹û²»Ö¸¶¨È¡Öµ1
 Èç¹ûÔÚchar1ÖÐÃ»ÓÐÕÒµ½×Ö´®char2£¬·µ»Ø0
 ÀýÈç£ºSELECT INSTR('Doctor Who','Who') words FROM DUAL;
 ½á¹û·µ»Ø8
+
+9.REPLACE
+replace(str,n,m)´Óstr×Ö·û´®ÖÐËÑ¹ýn£¬²¢ÓÃm×Ö·ûÌæ»»£¬²¢²»»á¸Ä±äÊý¾Ý¿âÖÐµÄÔ­Ê¼Öµ
+SELECT REPLACE('Hello World!','o','HA') FROM DUAL;
 
 ¶þ¡¢OracleÊýÖµº¯Êý
 1.ROUND
@@ -114,6 +123,10 @@ CEIL(n)¡¢FLOOR(n)ÕâÁ½¸öº¯Êý¹ËÃûË¼Òå£¬Ò»¸öÊÇÌì»¨°å£¬¾ÍÊÇÈ¡´óÓÚ»òµÈÓÚnµÄ×îÐ¡ÕûÊýÖµ
 ×î´óÕûÊýÖµ¡£ÀýÈç£º
 SELECT CEIL(45.678) FROM DUAL; --46
 SELECT FLOOR(45.678) FROM DUAL; --45
+
+5. ABS
+abs(value) ·µ»ØvalueµÄ¾ø¶ÔÖµ
+SELECT abs(-10) FROM DUAL; --·µ»Ø½á¹ûÎª10
 
 Èý¡¢OracleÈÕÆÚ²Ù×÷
 ³£ÓÃµÄÈÕÆÚ¸ñÊ½£º
@@ -173,6 +186,9 @@ select to_char(sysdate,'dd')    as nowDay    from dual;   //»ñÈ¡Ê±¼äµÄÈÕ
 select to_char(sysdate,'hh24') as nowHour   from dual;   //»ñÈ¡Ê±¼äµÄÊ±   
 select to_char(sysdate,'mi')    as nowMinute from dual;   //»ñÈ¡Ê±¼äµÄ·Ö   
 select to_char(sysdate,'ss')    as nowSecond from dual;   //»ñÈ¡Ê±¼äµÄÃë
+
+select to_char('12345.67') from dual; --·µ»Ø½á¹ûÎª12345.67
+select to_char('12345.67','99,999.99') from dual; --·µ»Ø½á¹ûÎª12,345.67
 
 5.LAST_DAY
 LAST_DAY(date):·µ»ØÈÕÆÚdateËùÔÚÔÂµÄ×îºóÒ»Ìì£¬Ò»°ãÊÇÔÚ°´ÕÕ×ÔÈ»ÔÂ¼ÆËãÄ³Ð©ÒµÎñÂß¼­£¬»òÕß°²ÅÅÔÂÄ©ÖÜÆÚÐÔ»î¶¯Ê±ºÜÓÐÓÃ´¦¡£Àý×Ó£º
