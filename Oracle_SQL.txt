@@ -34,3 +34,13 @@ alter table 表名 drop column 字段名;
 总结：
 1、当字段没有数据或者要修改的新类型和原类型兼容时，可以直接modify修改。
 2、当字段有数据并用要修改的新类型和原类型不兼容时，要间接新建字段来转移。
+
+表空间增加，oracle不会rebalance
+
+ALTER TABLESPACE TBS_FEP_DATA ADD DATAFILE
+'/oradata01/qdaccdb/TBS_FEP_DATA_06.dbf' SIZE 100M
+AUTOEXTEND ON NEXT 10M MAXSIZE 20480M;
+
+ALTER TABLESPACE TBS_FCS_DTL ADD DATAFILE
+'/oradata01/qdaccdb/TBS_FCS_DTL_06.dbf' SIZE 100M
+AUTOEXTEND ON NEXT 10M MAXSIZE 10240M;
