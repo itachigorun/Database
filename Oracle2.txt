@@ -162,6 +162,8 @@ SYSTIMESTAMP也是Oracle的内部日期函数，返回当前系统日期和时间，精确到毫秒。
 TO_DATE的功能是将字符串按照定制格式转换为日期类型，语法格式是：
 TO_DATE(char,fmt)
 其中：char是要转换的字符串，fmt是转换格式，nlsparams是指定日期语言。其中比较重要的是格式，常用的日期格式如下：
+to_date('2017-04-27','yyyy-mm-dd hh24:mi:ss')
+
 to_date('10-12-06','MM-DD-YY')
 to_date('jan 2007','MON YYYY')
 to_date('2007/05/31','YYYY/MM/DD')
