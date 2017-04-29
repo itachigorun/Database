@@ -1,50 +1,50 @@
-Oralce�ṩ�������ַ��������ͣ�char��nchar��varchar��varchar2��nvarchar��
-    char:ʹ�����ݿ��ַ������洢���ݣ�NLS�������ȹ̶������ÿո��Զ����뵽��󳤶ȡ�ָ������ʱ��Ĭ�ϳ��ȵļ�����λ��NLS_LENGTH_SEMANTICS
-����������Ҳ��ָ���ֽڻ����ַ�������:CHAR(12 BYTE) CHAR(12 CHAR)��char�������洢����Ϊ2000�ֽڣ�plsql�У����洢���ȿɴ�32767���ֽڡ���ָ������ʱ����󳤶�Ϊ1��
-    nchar��ʹ�ù����ַ����洢���ݣ����뷽ʽ��unicode���洢��ʽΪUTF8��AL16UTF16�������charһ����GBK1�����������ֽڣ�UTF8һ�����������ֽڡ�
-    varchar2��ʹ�����ݿ��ַ����洢���ݣ����ȿɱ䡣Ĭ���ܲ���NLS_LENGTH_SEMANTICSӰ�졣��ʹ��char,byteΪ������λ��Ĭ��byte�����洢����4000�ֽڡ�plsql�У��洢
-���ȿɴ�32767�ֽڡ�����ָ����󳤶ȣ�������СΪ1.
-    nvarchar2:ʹ�ù����ַ����洢���ݡ������varchar2һ����
-    varchar Oracle���ݣ���Oracle�в������á�
+Oralce提供了五种字符数据类型：char、nchar、varchar、varchar2、nvarchar。
+    char:使用数据库字符集来存储数据（NLS），长度固定，会用空格自动补齐到最大长度。指定长度时，默认长度的计量单位由NLS_LENGTH_SEMANTICS
+参数决定，也可指定字节或者字符，例如:CHAR(12 BYTE) CHAR(12 CHAR)。char类型最大存储长度为2000字节，plsql中，最大存储长度可达32767个字节。不指定长度时，最大长度为1。
+    nchar：使用国家字符集存储数据，编码方式是unicode，存储方式为UTF8或AL16UTF16。其余和char一样。GBK1个汉字两个字节，UTF8一个汉子三个字节。
+    varchar2：使用数据库字符集存储数据，长度可变。默认受参数NLS_LENGTH_SEMANTICS影响。可使用char,byte为计量单位，默认byte。最大存储长度4000字节。plsql中，存储
+长度可达32767字节。必须指定最大长度，长度最小为1.
+    nvarchar2:使用国家字符集存储数据。其余和varchar2一样。
+    varchar Oracle兼容，在Oracle中不建议用。
 
-LONG������Ϊ��VARCHAR2�ļӳ��棬�����洢�䳤�ַ��������ɴ�2GB�ַ������ݣ���LONG������������ƣ����Բ�����ʹ��:
-    1.ÿ����ֻ����һ��LONG�����У�
-    2.������Ϊ������ΨһԼ����
-    3.���ܽ���������
-    4.���ܳ����ڲ�ѯ�����У�
-    5.����ָ���������ʽ��
-    5.������洢���̲��ܽ���LONG�������͵Ĳ�����
-CLOB�����洢������䳤�ַ���������4GB���ݡ�
+LONG：可认为是VARCHAR2的加长版，用来存储变长字符串，最多可达2GB字符串数据，但LONG类型有诸多限制，所以不建议使用:
+    1.每个表只能有一个LONG类型列；
+    2.不能作为主键或唯一约束；
+    3.不能建立索引；
+    4.不能出现在查询条件中；
+    5.不能指定正则表达式；
+    5.函数或存储过程不能接受LONG数据类型的参数。
+CLOB用来存储定长或变长字符串，最多达4GB数据。
 
-NUMBER:���������������ɴ�38λ������,NUMBER(p,s)p��ʾ���ȣ��ܳ��ȣ���s��ʾС������������ pȱʡ��Ĭ��Ϊ38��sȱʡĬ��Ϊ0
-    NUMERIC(p,s):��ȫӳ����NUMBER(p,s)
-    DECIMAL(p,s)��DEC(p,s):��ȫӳ����NUMBER(p,s)
-    INTEGER��INT����ȫӳ����NUMBER(38)����
-    SMALLINT:��ȫӳ����NUMBER(38)����
-    FLOAT(b):ӳ����NUMBER����
-    DOUBLE PRECISION:ӳ����NUMBER����
-    REAL:ӳ��NUMBER����
+NUMBER:这种数据类型最多可存38位的数字,NUMBER(p,s)p表示精度（总长度），s表示小数且四舍五入 p缺省则默认为38，s缺省默认为0
+    NUMERIC(p,s):完全映射至NUMBER(p,s)
+    DECIMAL(p,s)或DEC(p,s):完全映射至NUMBER(p,s)
+    INTEGER或INT：完全映射至NUMBER(38)类型
+    SMALLINT:完全映射至NUMBER(38)类型
+    FLOAT(b):映射至NUMBER类型
+    DOUBLE PRECISION:映射至NUMBER类型
+    REAL:映射NUMBER类型
 
 
-�������� 
-    DATA���ͣ�ռ7���ֽڡ����������͡��ꡢ�¡��ա�ʱ���֡���  2017-04-10 19:37:53
+日期类型 
+    DATA类型，占7个字节。包括：世纪、年、月、日、时、分、秒  2017-04-10 19:37:53
 
-    DATE��TIMESTAMP��ORACLE����õ��������͡�DATE�����������ں�ʱ�䡣��ʾ��Χ�ӹ�Ԫǰ4712��1��1������Ԫ9999��12��31
-    DATE���������ݿ��е�ʵ�ʴ洢�̶�Ϊ7���ֽڣ���ʽ�ֱ�Ϊ��
-    ��1�ֽڣ�����+100
-    ��2�ֽڣ���
-    ��3�ֽڣ���
-    ��4�ֽڣ���
-    ��5�ֽڣ�Сʱ+1
-    ��6�ֽڣ���+1
-    ��7�ֽڣ���+1
+    DATE和TIMESTAMP是ORACLE中最常用的日期类型。DATE用来保存日期和时间。表示范围从公元前4712年1月1日至公元9999年12月31
+    DATE类型在数据库中的实际存储固定为7个字节，格式分别为：
+    第1字节：世纪+100
+    第2字节：年
+    第3字节：月
+    第4字节：日
+    第5字节：小时+1
+    第6字节：分+1
+    第7字节：秒+1
 
 2.TIMESTAMP 
-    TIMESTAMP��ʾʱ�������DATE�������ǲ������Ա������ں�ʱ�䣬���ܱ���С���룬���ƶ�Ϊ0-9λ��Ĭ��6λ����߾��ȿ��Ե�ns(����)����
-    ���ݿ��ڲ���7����11���ֽڴ洢������Ϊ0ʱ����7�ֽڴ洢����DATE������ͬ�����ȴ���0����11�ֽڴ洢����ʽΪ��
-    ��һ�ֽ�-�����ֽڣ���DATE��ͬ
-    8-11   �� ���룬����4���ֽڴ洢���ڲ���������Ϊ����
+    TIMESTAMP表示时间戳，与DATE的区别是不仅可以保存日期和时间，还能保存小数秒，可制定为0-9位，默认6位，最高精度可以到ns(纳秒)级别。
+    数据库内部用7或者11个字节存储，精度为0时，用7字节存储，与DATE功能相同，精度大于0则用11字节存储。格式为：
+    第一字节-第七字节：和DATE相同
+    8-11   ： 纳秒，采用4个字节存储，内部运算类型为整形
 
 
-������
-    BLOB�������������ʹ洢���4GB���ݣ����Ҫ�洢���ӱ����Ӵ����ĵ���ͼ���ļ��Ⱦ��ʺϲ��á�
+二进制
+    BLOB：这种数据类型存储最多4GB数据，如果要存储电子表格、子处理文档、图像文件等就适合采用。
