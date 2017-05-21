@@ -15,9 +15,11 @@
 2. 查询表空间状态
 db2 SELECT TBSP_NAME, TBSP_USABLE_PAGES, TBSP_USED_PAGES FROM SYSIBMADM.SNAPTBSP_PART
 
-列出多有表空间的详细信息
+列出所有表空间的详细信息
 #db2 list tablespaces show detail
 
+列出表空间balance信息
+#db2 list utilities show detail
 扩大单个表空间(5000指的是页数)
 db2 "ALTER TABLESPACE TBS_FCS_DEFAULT RESIZE (ALL 50000)"
 
