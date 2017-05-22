@@ -214,3 +214,22 @@ parallelization）。
 ● 如果使用大文件表空间替代传统的表空间，数据库开启（open），checkpoints，以及 DBWR 进程的性能会得到提高。但是增大数据文件
 
 （datafile）容量可能会增加备份与恢复的时间。
+
+
+查询数据库状态
+SQL> select database_status from v$instance;
+
+DATABASE_STATUS
+-------------------
+ACTIVE
+
+查询实例活动状态
+SQL> select active_state from v$instance;
+ACTIVE_ST
+---------------
+NORMAL
+
+SQL> select status from v$instance;
+STATUS
+---------
+OPEN
