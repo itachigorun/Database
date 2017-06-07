@@ -10,3 +10,6 @@ alter table 表名 drop column 字段名;
 总结：
 1、当字段没有数据或者要修改的新类型和原类型兼容时，可以直接modify修改。
 2、当字段有数据并用要修改的新类型和原类型不兼容时，要间接新建字段来转移。
+
+
+updata tablename set column=xxx  where column=xxx;

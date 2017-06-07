@@ -1,9 +1,9 @@
 常用DBA脚本
 1、查看表空间的名称及大小
 　　select t.tablespace_name, round(sum(bytes/(1024*1024)),0) ts_size
-　　from dba_tablespaces t, dba_data_files d
-　　where t.tablespace_name = d.tablespace_name
-　　group by t.tablespace_name;
+   from dba_tablespaces t, dba_data_files d
+   where t.tablespace_name = d.tablespace_name
+    group by t.tablespace_name;
 
 2、查看表空间物理文件的名称及大小
 　　select tablespace_name, file_id, file_name,
