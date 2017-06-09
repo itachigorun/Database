@@ -62,15 +62,15 @@ WHERE  a.tablespace_name = b.tablespace_name;
 
 
 
-SELECT TABLESPACE_NAME "表空间",
+SELECT TABLESPACE_NAME "TABLESPACE_NAME",
        To_char(Round(BYTES / 1024, 2), '99990.00')
-       || ''           "实有",
+       || ''           "TOTAL ",
        To_char(Round(FREE / 1024, 2), '99990.00')
-       || 'G'          "现有",
+       || 'G'          "FREE ",
        To_char(Round(( BYTES - FREE ) / 1024, 2), '99990.00')
-       || 'G'          "使用",
+       || 'G'          "USED ",
        To_char(Round(10000 * USED / BYTES) / 100, '99990.00')
-       || '%'          "比例"
+       || '%'          "% USED"
 FROM   (SELECT A.TABLESPACE_NAME                             TABLESPACE_NAME,
                Floor(A.BYTES / ( 1024 * 1024 ))              BYTES,
                Floor(B.FREE / ( 1024 * 1024 ))               FREE,
