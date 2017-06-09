@@ -13,3 +13,119 @@ alter table 表名 drop column 字段名;
 
 
 updata tablename set column=xxx  where column=xxx;
+
+-查看实例名
+select instance_number,instance_name,host_namefrom v$instance;
+--查看RAC监听配置
+select name,value,display_value from v$parameter where name in('remote_listener','local_listener');
+--查看内存SGA,PGA分配情况
+select * from v$sgastat;
+select * from v$pgastat;
+--查看查看是否归档，创建时间及平台类型
+select dbid,name,db_unique_name,created,log_mode,platform_name from v$database;
+--dblink查看
+select * from dba_db_links;
+
+
+
+SQLPlus 在连接时通常有
+ 
+1. sqlplus / as sysdba   --以操作系统权限认证的oracle sys管理员登陆
+    操作系统认证，不需要数据库服务器启动listener，也不需要数据库服务器处于可用状态。比如我们想要启动数据库就可以用这种方式进入
+    sqlplus，然后通过startup命令来启动。
+
+2. sqlplus username/password
+    连接本机数据库，不需要数据库服务器的listener进程，但是由于需要用户名密码的认证，因此需要数据库服务器处于可用状态才行。
+
+3. sqlplus usernaem/password@orcl
+    通过网络连接，这是需要数据库服务器的listener处于监听状态。此时建立一个连接的大致步骤如下　
+　　a. 查询sqlnet.ora，看看名称的解析方式，默认是TNSNAME　　
+　　b. 查询tnsnames.ora文件，从里边找orcl的记录，并且找到数据库服务器的主机名或者IP，端口和service_name　　
+　　c. 如果服务器listener进程没有问题的话，建立与listener进程的连接。　　
+　　d. 根据不同的服务器模式如专用服务器模式或者共享服务器模式，listener采取接下去的动作。默认是专用服务器模式，没有问题的话客户端
+      就连接上了数据库的server process。
+　　e. 这时连接已经建立，可以操作数据库了。
+
+4. sqlplus username/password@//host:port/sid
+　　用sqlplus远程连接oracle命令(例：sqlplus risenet/1@//192.168.130.99:1521/risenet)
+
+5. sqlplus /nolog             --不在cmd或者terminal当中暴露密码的登陆方式
+   SQL> conn /as sysdba
+   &
+   SQL> conn sys/password as sysdba
+
+6. sqlplus scott/tiger      --非管理员用户登陆
+
+7. sqlplus scott/tiger@orcl    --非管理员用户使用tns别名登陆
+
+8. sqlplus                       --不显露密码的登陆方式
+   Enter user-name：sys
+   Enter password：password as sysdba     --以sys用户登陆的话 必须要加上 as sysdba 子句
+
+
+oracle查询版本
+方法一：sqlplus / as sysdba(sqlplus user/password@ssid)
+
+方法二：SQL> select * from v$version; 
+
+方法三：SQL> select * from product_component_version;
+
+方法四：SQL>select vesion from v$instance;
+
+
+
+查看oracle数据库的SID:
+select instance_name from v$instance;
+
+查看oracle所在服务器的ip:
+select utl_inaddr.get_host_address from dual;
+
+查询用户 CPU 的使用率 
+这个语句是用来显示每个用户的 CPU 使用率，有助于用户理解数据库负载情况
+
+SELECT ss.username, se.SID, VALUE / 100 cpu_usage_seconds
+    FROM v$session ss, v$sesstat se, v$statname sn
+   WHERE     se.STATISTIC# = sn.STATISTIC#
+         AND NAME LIKE '%CPU used by this session%'
+         AND se.SID = ss.SID
+         AND ss.status = 'ACTIVE'
+         AND ss.username IS NOT NULL
+ORDER BY VALUE DESC;
+
+
+
+查询数据库长查询进展情况
+
+显示运行中的长查询的进展情况
+
+SELECT a.sid,
+         a.serial#,
+         b.username,
+         opname OPERATION,
+         target OBJECT,
+         TRUNC (elapsed_seconds, 5) "ET (s)",
+         TO_CHAR (start_time, 'HH24:MI:SS') start_time,
+         ROUND ( (sofar / totalwork) * 100, 2) "COMPLETE (%)"
+    FROM v$session_longops a, v$session b
+   WHERE     a.sid = b.sid
+         AND b.username NOT IN ('SYS', 'SYSTEM')
+         AND totalwork > 0
+ORDER BY elapsed_seconds;
+
+
+
+获取当前会话 ID，进程 ID，客户端 ID 等
+
+这个专门提供给想使用进程 ID 和 会话 ID 做些 voodoo magic 的用户。
+
+SELECT b.sid,
+       b.serial#,
+       a.spid processid,
+       b.process clientpid
+  FROM v$process a, v$session b
+ WHERE a.addr = b.paddr AND b.audsid = USERENV ('sessionid');
+V$SESSION.SID AND V$SESSION.SERIAL# 是数据库进程 ID
+
+V$PROCESS.SPID 是数据库服务器后台进程 ID
+
+V$SESSION.PROCESS 是客户端 PROCESS ID, ON windows it IS : separated THE FIRST # IS THE PROCESS ID ON THE client AND 2nd one IS THE THREAD id.

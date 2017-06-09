@@ -6,10 +6,18 @@
     group by t.tablespace_name;
 
 2、查看表空间物理文件的名称及大小
-　　select tablespace_name, file_id, file_name,
-　　round(bytes/(1024*1024),0) total_space
-　　from dba_data_files
-　　order by tablespace_name;
+    select tablespace_name, file_id, file_name, 
+    round(bytes/(1024*1024),0) total_space 
+    from dba_data_files 
+    order by tablespace_name; 
+
+查询数据库的实际大小
+给出以 GB 为单位的数据库的实际大小
+SELECT SUM (bytes) / 1024 / 1024 / 1024 AS GB FROM dba_data_files;
+
+查询数据库中数据占用的大小或者是数据库使用细节
+给出在数据库中数据占据的空间大小
+SELECT SUM (bytes) / 1024 / 1024 / 1024 AS GB FROM dba_segments;
 
 3、查看回滚段名称及大小
 　　select segment_name, tablespace_name, r.status,
@@ -27,8 +35,8 @@
 
 6、查看表空间的使用情况
 　　select sum(bytes)/(1024*1024) as free_space,tablespace_name
-　　from dba_free_space
-　　group by tablespace_name;
+    from dba_free_space
+    group by tablespace_name;
 
 SELECT A.TABLESPACE_NAME,A.BYTES TOTAL,B.BYTES USED, C.BYTES FREE,
 (B.BYTES*100)/A.BYTES "% USED",(C.BYTES*100)/A.BYTES "% FREE"
