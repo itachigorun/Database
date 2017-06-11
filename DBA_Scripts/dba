@@ -65,6 +65,7 @@ from v$session_longops , v$sql
 where time_remaining <> 0
 and sql_address = address
 and sql_hash_value = hash_value
+
 2、 11、查看数据表的参数信息
 SELECT partition_name, high_value, high_value_length, tablespace_name,
 pct_free, pct_used, ini_trans, max_trans, initial_extent,
