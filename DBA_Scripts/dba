@@ -80,6 +80,7 @@ ORDER BY partition_position
 12.查看还没提交的事务
 　　select * from v$locked_object;
 　　select * from v$transaction;
+
 13。查找object为哪些进程所用
 select
 p.spid,
