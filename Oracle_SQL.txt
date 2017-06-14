@@ -1,5 +1,23 @@
 # itachigorun 
- 
+
+
+查询数据库状态
+SQL> select database_status from v$instance;
+
+DATABASE_STATUS
+-------------------
+ACTIVE
+
+查询实例活动状态
+SQL> select active_state from v$instance;
+ACTIVE_ST
+---------------
+NORMAL
+
+SQL> select status from v$instance;
+STATUS
+---------
+OPEN
 
 1.查询表空间
 #sqlplus / as sysdba
@@ -140,22 +158,20 @@ CREATE TABLESPACE TBS_FCS_DTL  DATAFILE '/oradata/testdb/TBS_FCS_DTL_01.dbf' siz
 创建临时表空间
 CREATE TEMPORARY TABLESPACE TBS_FCS_TEMP  TEMPFILE '/oradata/testdb/TBS_FCS_TEMP_01.dbf' size 1G  AUTOEXTEND ON  NEXT 10M  MAXSIZE UNLIMITED;    
 
-4.表空间增加，oracle不会rebalance
-
-ALTER TABLESPACE TBS_FEP_DATA ADD DATAFILE
-'/oradata01/qdaccdb/TBS_FEP_DATA_06.dbf' SIZE 100M
-AUTOEXTEND ON NEXT 10M MAXSIZE 20480M;
-
-ALTER TABLESPACE TBS_FCS_DTL ADD DATAFILE
-'/oradata01/qdaccdb/TBS_FCS_DTL_06.dbf' SIZE 100M
-AUTOEXTEND ON NEXT 10M MAXSIZE 10240M;
+4.表空间文件增加，oracle不会rebalance
+ALTER TABLESPACE TBS_FEP_DATA ADD DATAFILE '/oradata01/qdaccdb/TBS_FEP_DATA_06.dbf' SIZE 100M AUTOEXTEND ON NEXT 10M MAXSIZE 20480M;
 
 4. 删除表空间
 SQL> drop tablespace TBS_FCS_SUM including contents and datafiles;
-
 SQL> DROP TABLESPACE TBS_FCS_SUM INCLUDING CONTENTS AND DATAFILES CASCADE CONSTRAINTS;(有外键等约束)
 
 
+表空间、临时表空间文件自动扩展关闭
+alter database tempfile '/oracledata/testdb/TBS_FCS_DATA_01.dbf' AUTOEXTEND off;
+alter database datafile '/oracledata/testdb/TBS_FCS_DATA_01.dbf' AUTOEXTEND off;
+
+修改表空间文件大小
+alter database datafile '/oracledata/testdb/TBS_FCS_DATA_01.dbf' resize 1024M;
 
 5.数据库最多可以有65535（64K）个表空间文件（分为smallfile、bigfile文件），一个smallfile的表空间最多可以有1023个数据文件，
 Oracle中每个small file数据文件最多只能包含2的22次方 - 1 个数据块，所以数据库最大为8KB*(2^22-1)=32GB-8KB
@@ -176,60 +192,27 @@ tablespace block size 16384 does not match configured block sizes
 在64位系统中，Oracle数据库的存储能力被扩展到了8 EB（1EB =1024PB，1PB = 1024TB，1TB=1024GB）。
 
 大文件表空间
-
-在Oracle中用户可以创建大文件表空间（bigfile tablespace）。这样Oracle数据库使用的表空间（tablespace）可以由一个单一的大文件构成，而不是若干个小数据文件。这使Oracle可以发挥64位系统的能力，创建、管理超大的文件。在64位系统中，Oracle数据库的存储能力被扩展到了8 EB（1EB =1024PB，1PB = 1024TB，1TB=1024GB）。
-
-当 数据库文件由Oracle管理（Oracle-managed files），且使用大文件表空间（bigfile tablespace）时，数据文件对用户完全透明。换句话说，用户只须针对表空间（tablespace）执行管理操作，而无须关心处于底层的数据文件 （datafile）。使用大文件表空间，使表空间成为磁盘空间管理，备份，和恢复等操作的主要对象。使用大文件表空间，并与由Oracle管理数据库文件（Oracle-managed files）技术以及自动存储管理（Automatic Storage  Management）技术相结合，就不再需要管理员手工创建新的数据文件（datafile）并维护众多数据库文件，因此简化了数据库文件管理工作。
-
-数 据库默认创建的是小文件表空间（smallfile tablespace），即Oracle中传统的表空间（tablespace）类型。数据库中 SYSTEM 和 SYSAUX 表空间在创建时总是使用传统类型只有本地管理的（locally managed），且段空间自动管理（automatic segmentspace  management）的表空间（tablespace）才能使用大文件表空间（bigfile
-
-tablespace）。 但是有两个例外：本地管理的撤销表空间（undo tablespace）和临时表空间（temporary tablespace），即使其段（segment）为手工管理（manually managed），也可以使用大文件表空间。一个Oracle数据库可以同时包含大文件/小文件表空间（bigfile/smallfile   tablespace）。SQL语句执行时无需考虑表空间（tablespace）的类型，除非语句中显式地引用了数据文件（datafile）名。
-
-管 理员可以创建一组临时表空间（temporary tablespace），用户在需要时可以利用组内各个表空间（tablespace）提供的临时空间。管理员还可以指定表空间组（tablespace group）为数据库默认的临时表空间。当用户需要大量临时空间进行排序操作时，就可以利用大文件表空间及表空间组。
+在Oracle中用户可以创建大文件表空间（bigfile tablespace）。这样Oracle数据库使用的表空间（tablespace）可以由一个单一的大文件构成，
+而不是若干个小数据文件。这使Oracle可以发挥64位系统的能力，创建、管理超大的文件。在64位系统中，Oracle数据库的存储能力被扩展到了8 EB（1EB =1024PB，1PB = 1024TB，1TB=1024GB）。
+当数据库文件由Oracle管理（Oracle-managed files），且使用大文件表空间（bigfile tablespace）时，数据文件对用户完全透明。换句话说，用户只须针对表空间（tablespace）执行管理操作，
+而无须关心处于底层的数据文件 （datafile）。使用大文件表空间，使表空间成为磁盘空间管理，备份，和恢复等操作的主要对象。使用大文件表空间，并与由Oracle管理数据库文件（Oracle-managed files）技术以及自动存储管理（Automatic Storage  Management）技术相结合，
+就不再需要管理员手工创建新的数据文件（datafile）并维护众多数据库文件，因此简化了数据库文件管理工作。数据库默认创建的是小文件表空间（smallfile tablespace），即Oracle中传统的表空间（tablespace）类型。
+数据库中 SYSTEM 和 SYSAUX 表空间在创建时总是使用传统类型只有本地管理的（locally managed），且段空间自动管理（automatic segmentspace  management）的表空间（tablespace）才能使用大文件表空间（bigfile tablespace）。 
+但是有两个例外：本地管理的撤销表空间（undo tablespace）和临时表空间（temporary tablespace），即使其段（segment）为手工管理（manually managed），也可以使用大文件表空间。
+一个Oracle数据库可以同时包含大文件/小文件表空间（bigfile/smallfile   tablespace）。SQL语句执行时无需考虑表空间（tablespace）的类型，除非语句中显式地引用了数据文件（datafile）名。
+管理员可以创建一组临时表空间（temporary tablespace），用户在需要时可以利用组内各个表空间（tablespace）提供的临时空间。管理员还可以指定表空间组（tablespace group）为数据库默认的临时表空间。
+当用户需要大量临时空间进行排序操作时，就可以利用大文件表空间及表空间组。
 
 使用大文件表空间的优势
-
-● 使用大文件表空间（bigfile tablespace）可以显著地增强Oracle数据库的存储能力。一个小文件表空间（smallfile tablespace）最多可以包含1024个数据文件（datafile），而 一个大文件表空间中只包含一个文件，这个数据文件的最大容量是小数据文件的1024倍。这样看来，大文件表空间和小文件表空间的最大容量是相同的。但是由 于每个数据库最多使用64K个数据文件，因此使用大文件表空间时数据库中表空间的极限个数是使用小文件表空间时的1024倍，使用大文件表空间时的总数据 库容量比使用小文件表空间时高出三个数量级。换言之，当一个Oracle数据库使用大文件表空间，且使用最大的数据块容量时（32K），其总容量可以达到 8EB。
-
+● 使用大文件表空间（bigfile tablespace）可以显著地增强Oracle数据库的存储能力。一个小文件表空间（smallfile tablespace）最多可以包含1024个数据文件（datafile），而 一个大文件表空间中只包含一个文件，这个数据文件的最大容量是小数据文件的1024倍。
+这样看来，大文件表空间和小文件表空间的最大容量是相同的。但是由 于每个数据库最多使用64K个数据文件，因此使用大文件表空间时数据库中表空间的极限个数是使用小文件表空间时的1024倍，使用大文件表空间时的总数据 库容量比使用小文件表空间时高出三个数量级。
+换言之，当一个Oracle数据库使用大文件表空间，且使用最大的数据块容量时（32K），其总容量可以达到 8EB。
 ● 在超大型数据库中使用大文件表空间减少了数据文件的数量，因此也简化了对数据文件的管理工作。由于数据文件的减少，SGA中关于数据文件的信息，以及控制文件（control file）的容量也得以减小。
-
 ● 由于数据文件对用户透明，由此简化了数据库管理工作。
 
 使用大文件表空间时需要考虑的因素
-
 ● 大文件表空间（bigfile tablespace）应该和自动存储管理（Automatic  Storage Management）或其他逻辑卷管理工具（logical volume manager）配合使用，这些工具应该能够支持动态扩展逻辑卷，也能支持striping（数据跨磁盘分布）或RAID。
-
-● 应该避免在不支持striping的系统上使用大文件表空间，因为这将不利于并行执行（parallel execution）及 RMAN 的并行备份（backup
-
-parallelization）。
-
-● 当表空间正在使用的磁盘组（disk group）可能没有足够的空间，且扩展表空间的唯一办法是向另一个磁盘组加入数据文件时，应避免使用
-
-大文件表空间。
-
-● 不建议在不支持大文件的平台上使用大文件表空间，这会限制表空间（tablespace）的容量。参考相关的操作系统文档了解其支持的最大文
-
-件容量。
-
-● 如果使用大文件表空间替代传统的表空间，数据库开启（open），checkpoints，以及 DBWR 进程的性能会得到提高。但是增大数据文件
-
-（datafile）容量可能会增加备份与恢复的时间。
-
-
-查询数据库状态
-SQL> select database_status from v$instance;
-
-DATABASE_STATUS
--------------------
-ACTIVE
-
-查询实例活动状态
-SQL> select active_state from v$instance;
-ACTIVE_ST
----------------
-NORMAL
-
-SQL> select status from v$instance;
-STATUS
----------
-OPEN
+● 应该避免在不支持striping的系统上使用大文件表空间，因为这将不利于并行执行（parallel execution）及 RMAN 的并行备份（backup parallelization）。
+● 当表空间正在使用的磁盘组（disk group）可能没有足够的空间，且扩展表空间的唯一办法是向另一个磁盘组加入数据文件时，应避免使用大文件表空间。
+● 不建议在不支持大文件的平台上使用大文件表空间，这会限制表空间（tablespace）的容量。参考相关的操作系统文档了解其支持的最大文件容量。
+● 如果使用大文件表空间替代传统的表空间，数据库开启（open），checkpoints，以及 DBWR 进程的性能会得到提高。但是增大数据文件（datafile）容量可能会增加备份与恢复的时间。
