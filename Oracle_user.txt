@@ -18,3 +18,79 @@ GRANT DEBUG ANY PROCEDURE TO fcs;
 GRANT DEBUG CONNECT SESSION TO fcs;
 GRANT EXECUTE ANY PROCEDURE TO fcs;
 GRANT DBA to fcs;
+
+1、   linux 下 oracle 的启动
+以 oracle 身份登录  
+启动    lsnrctl start
+登录    sqplus /nolog
+连接数据库    connect  /as   sysdba
+启动数据库    startup
+关闭数据库    shutdown immediate
+2、   在数据中创建用户名
+启动数据库后创建用户名
+连接超级用户    connect system/admin    system 系统用户名字   admin 密码
+创建用户名字    create user sha identified by admin   用户名： sha 密码 :admin
+           可以写    Default tablespace user   // 指定存储对象使用的默认空间表 默认是 system
+               Temporary tablespace temp; // 保存临时对象所使用的空间表 默认是 system
+        上面的俩行，可以写 空间表为 user 临时为 temp ；不写就默认
+3、   添加用户的权限
+Grant 是授予权限的 如：
+     Grant create session to sha ； // 授予 sha 连接数据的权限
+  系统权限如下：
+系统特权
+允许执行的操作
+Create session
+连接数据库
+Create sequence
+创建序列
+Create synonym
+创建同名对象
+Create table
+创建表
+Create any table
+创建任何模式的表
+Drop table
+删除表
+Create procedure
+创建存储过程
+Execute any procedure
+执行任何模式的存储过程
+Create user
+创建用户
+Create view
+创建视图
+Drop user
+删除用户
+Drop any table
+删除任何模式的表
+4、   向用户授予系统特权
+Grant execute any procedure to sha with admin option 
+此句意思为为 sha 用户创建系统特权并且可以用 sha 为别的用户授予权限
+连接 sha 用户   connect sha/admin
+可以创建别的用户
+、查看用户权限
+进入 sha 用户 connect sha/admin
+Select * from user_sys_privs; 可以查看到一个列表，
+列代表 用户名 权限 是否可以给别的用户附加权限（ N 、 Y ）  
+行代表 权限都有那些
+、撤销用户授予的权限
+必须连接 connect system/admin
+撤销权限   revoke 是系统撤销权限的关键词
+Revoke execute any procedure from sha ；
+、更改用户密码
+进入 sha 用户   connect sha/admin
+Password       输入旧密码   输入新密码俩边    OK
+或者 用 alter user sha identified by xinmima
+、删除用户
+Connect system/admin
+Drop user sha ；
+、为用户授予角色
+Grant dba to sha ；
+Grant connect to sha ；
+Linux 下的 plsql  创建用户
+create user sha identified by admin
+Default tablespace user
+Temporary tablespace temp;
+Granr unlimited tablespace to sha ；     // 权限
+Grant dba to sha ；                   // 角色
+Grant connect to sha ；
