@@ -1,0 +1,20 @@
+*******创建用户*******
+create user username identified by password  default tablespace user_data  temporary tablespace user_temp;  
+ 
+*******给用户授予权限*******
+grant connect, resource, dba to username;
+GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW,EXP_FULL_DATABASE,IMP_FULL_DATABASE, DBA,CONNECT,RESOURCE,CREATE SESSION TO  caiyl;  
+grant dba to lxg;--授予DBA权限  
+grant unlimited tablespace to lxg;--授予不限制的表空间  
+grant select any table to lxg;--授予查询任何表  
+grant select any dictionary to lxg;--授予 查询 任何字典 
+GRANT CREATE ANY SYNONYM TO fcs;
+GRANT CREATE PUBLIC DATABASE LINK TO fcs;
+GRANT CONNECT TO fcs;
+GRANT RESOURCE TO fcs;
+GRANT CREATE ANY VIEW TO fcs;
+GRANT CREATE ANY PROCEDURE TO fcs;
+GRANT DEBUG ANY PROCEDURE TO fcs;
+GRANT DEBUG CONNECT SESSION TO fcs;
+GRANT EXECUTE ANY PROCEDURE TO fcs;
+GRANT DBA to fcs;
