@@ -19,6 +19,8 @@ STATUS
 ---------
 OPEN
 
+SELECT * FROM ALL_OBJECTS WHERE OBJECT_NAME ='your_table_name'  查询表所有的储存信息
+
 1.查询表空间
 #sqlplus / as sysdba
 SQL> select tablespace_name from dba_tablespaces;

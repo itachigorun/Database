@@ -19,6 +19,10 @@ GRANT DEBUG CONNECT SESSION TO fcs;
 GRANT EXECUTE ANY PROCEDURE TO fcs;
 GRANT DBA to fcs;
 
+*******************取消权限**********************
+revoke dba from fcs
+
+
 1、   linux 下 oracle 的启动
 以 oracle 身份登录  
 启动    lsnrctl start
