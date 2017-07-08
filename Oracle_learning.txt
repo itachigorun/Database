@@ -1,0 +1,17 @@
+groupadd oinstall                                   --创建用户组oinstall
+groupadd dba                                        --创建用户组dba
+chatter -i /etc/passwd  /etc/shadow                 --设定安全策略，允许修改此文件
+useradd -g oinstall -G dba oracle                   --创建oracle用户，并加入oinstall和dba组
+passwd oracle                                       --修改oracle用户密码
+chown -R oracle:oinstall /oracle                    --指定oracle安装目录用户组
+chmod -R 775 /oracle                                --修改oracle安装目录权限
+chatter +i /etc/passwd  /etc/shadow                 --设定配置文件权限，避免信息被篡改
+
+修改 /etc/sysctl.conf(sysctl -p 生效)   
+     /etc/security/limits.conf 
+     /etc/pam.d/login
+     .bash_profile
+
+$ ./runInstaller                                    --安装oracle
+
+SQL> select name from v$datafile;                   --查看数据文件的情况
