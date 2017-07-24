@@ -15,3 +15,44 @@ chatter +i /etc/passwd  /etc/shadow                 --设定配置文件权限�
 $ ./runInstaller                                    --安装oracle
 
 SQL> select name from v$datafile;                   --查看数据文件的情况
+
+
+
+
+
+
+用dos窗口把dmp文件恢复数据库时，数据库中需要有已经存在的数据库实例，用户名和密码。
+
+可以导入的本机的Oracle数据库也可以导入到其他机器上的oracle 数据库（所在的本机必须能连接上要导入的安装oracle 数据库的机器）。
+
+导入的命令：
+
+imp 用户名/密码@ip地址：端口号/数据库实例 file='需要导入的dmp文件的路径' full = y（可能需要）ignore=y
+
+假如导入的是本机的oracle数据库则可以用命令：
+
+imp admin/sa@orcl file=d:\tianma.dmp full=y ignore=yimp 用户名/密码@数据库实例 file="需要导入的dmp文件的路径" full=y ignore=y
+
+以上是导入全部的数据。如果不想导入全部的数据而是导入一个表或者是部分表的数据则用以下语句：
+
+imp admin/sa@orcl file=d:\tianma.dmp tables(student)
+
+imp admin/sa@orcl file=d:\tianma.dmp tables(student,class)
+
+导出数据：
+
+1. 将数据库test完全导出,导出到D:tianma.dmp 
+
+exp system/manager@test file=d:\tianma.dmp full=y
+
+2. 将数据库中的system用户与sys用户的表导出 
+
+exp system/manager@orcl file=d:\tianma.dmp owner=(system,sys)
+
+3. 将数据库中的表student,class导出 
+
+exp system/manager@orcl file=d:\tianma.dmp tables(student,class)
+
+4.将数据库中student表中filed字段以”00”打斗的数据导出 
+
+exp system/manager@test file=d:\tianma.dmp tables(student) query=”where filed like ‘00%’”
