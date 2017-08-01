@@ -51,8 +51,8 @@ exp system/manager@orcl file=d:\tianma.dmp owner=(system,sys)
 
 3. 将数据库中的表student,class导出 
 
-exp system/manager@orcl file=d:\tianma.dmp tables(student,class)
+exp system/manager@orcl file=d:\tianma.dmp tables=student,class
 
 4.将数据库中student表中filed字段以”00”打斗的数据导出 
 
-exp system/manager@test file=d:\tianma.dmp tables(student) query=”where filed like ‘00%’”
+exp system/manager@test file=d:\tianma.dmp tables=student query=”where filed like ‘00%’”
