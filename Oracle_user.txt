@@ -34,13 +34,13 @@ revoke dba from fcs
 启动数据库后创建用户名
 连接超级用户    connect system/admin    system 系统用户名字   admin 密码
 创建用户名字    create user sha identified by admin   用户名： sha 密码 :admin
-           可以写    Default tablespace user   // 指定存储对象使用的默认空间表 默认是 system
-               Temporary tablespace temp; // 保存临时对象所使用的空间表 默认是 system
+可以写    Default tablespace user   // 指定存储对象使用的默认空间表 默认是 system
+        Temporary tablespace temp; // 保存临时对象所使用的空间表 默认是 system
         上面的俩行，可以写 空间表为 user 临时为 temp ；不写就默认
 3、   添加用户的权限
 Grant 是授予权限的 如：
-     Grant create session to sha ； // 授予 sha 连接数据的权限
-  系统权限如下：
+Grant create session to sha ； // 授予 sha 连接数据的权限
+系统权限如下：
 系统特权
 允许执行的操作
 Create session
