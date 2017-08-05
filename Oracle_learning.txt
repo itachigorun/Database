@@ -83,46 +83,40 @@ $ ./runInstaller                                    --安装oracle
 
 
 
-
-
-
-
-
-
-
+1.
 SQL> select name from v$datafile;                   --查看数据文件的情况
 
-
-
-
-
-
-
+2.
 导入的命令：
 imp admin/sa@orcl file=./test.dmp full=y 
 
 以上是导入全部的数据。如果不想导入全部的数据而是导入一个表或者是部分表的数据则用以下语句：
-
 imp admin/sa@orcl file=./test.dmp tables=student,class
 
 导出数据：(oracle11g新特性，如果表为空，则默认不分配内存，导出数据会报错，直到有数据或强制分配)
 
-1. 将数据库t1完全导出,导出
+1). 将数据库t1完全导出,导出
 exp t1/t1@orcl file=./test.dmp full=y
 
-2. 将数据库中的testuser用户的表导出 
+2). 将数据库中的testuser用户的表导出 
 exp t1/t1@orcl file=./test.dmp owner=testuser
 
-3. 将数据库中的表student,class导出 
+3). 将数据库中的表student,class导出 
 exp t1/t1@orcl file=./test.dmp tables=student,class
 
-4.将数据库中student表中filed字段中等于table的数据导出 
+4).将数据库中student表中filed字段中等于table的数据导出 
 exp t1/t1@orcl file=./test.dmp tables=student query=\" where filed=\'table\' \"
 
-
+3.
 查看dump文件的一些基本信息,列出dump文件前十行ASCII信息
 $ strings test.dmp | head -10
 
+4.
 列出dump文件中的表信息
 $  strings fep.dmp | grep "CREATE TABLE "|awk '{print $3} '|sed 's/"//g'
 
+5.
+查询数据库日志操作模式
+SQL> archive log list 
+
+6.
