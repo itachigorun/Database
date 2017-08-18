@@ -119,4 +119,3 @@ $  strings fep.dmp | grep "CREATE TABLE "|awk '{print $3} '|sed 's/"//g'
 查询数据库日志操作模式
 SQL> archive log list 
 
-6.
