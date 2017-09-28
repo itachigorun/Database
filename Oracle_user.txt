@@ -1,14 +1,75 @@
-*******创建用户*******
-create user username identified by password  default tablespace user_data  temporary tablespace user_temp;  
+1.
+sys             --系统管理员，拥有最高权限
+system          --本地管理员，次高权限
+scott           --普通用户，密码默认为tiger,默认未解锁
+
+sqlplus / as sysdba             --登陆sys帐户
+sqlplus sys as sysdba           --同上
+sqlplus scott/tiger             --登陆普通用户scott
+
+2.
+SQLPlus 在连接时通常有
  
-*******给用户授予权限*******
+1). sqlplus / as sysdba   --以操作系统权限认证的oracle sys管理员登陆
+    操作系统认证，不需要数据库服务器启动listener，也不需要数据库服务器处于可用状态。比如我们想要启动数据库就可以用这种方式进入
+    sqlplus，然后通过startup命令来启动。
+
+2). sqlplus username/password
+    连接本机数据库，不需要数据库服务器的listener进程，但是由于需要用户名密码的认证，因此需要数据库服务器处于可用状态才行。
+
+3). sqlplus usernaem/password@orcl
+    通过网络连接，这是需要数据库服务器的listener处于监听状态。此时建立一个连接的大致步骤如下　
+　　a. 查询sqlnet.ora，看看名称的解析方式，默认是TNSNAME　　
+　　b. 查询tnsnames.ora文件，从里边找orcl的记录，并且找到数据库服务器的主机名或者IP，端口和service_name　　
+　　c. 如果服务器listener进程没有问题的话，建立与listener进程的连接。　　
+　　d. 根据不同的服务器模式如专用服务器模式或者共享服务器模式，listener采取接下去的动作。默认是专用服务器模式，没有问题的话客户端
+      就连接上了数据库的server process。
+　　e. 这时连接已经建立，可以操作数据库了。
+
+4). sqlplus username/password@//host:port/sid
+　　用sqlplus远程连接oracle命令(例：sqlplus risenet/1@//192.168.130.99:1521/risenet)
+
+5). sqlplus /nolog             --不在cmd或者terminal当中暴露密码的登陆方式
+   SQL> conn /as sysdba
+   &
+   SQL> conn sys/password as sysdba
+
+6). sqlplus scott/tiger      --非管理员用户登陆
+
+7). sqlplus scott/tiger@orcl    --非管理员用户使用tns别名登陆
+
+8). sqlplus                       --不显露密码的登陆方式
+   Enter user-name：sys
+   Enter password：password as sysdba     --以sys用户登陆的话 必须要加上 as sysdba 子句
+
+
+3.
+创建用户
+create user name identified by password default tablespace tbs_default temporary tablespace tbs_tempem
+
+4.
+添加/取消用户的权限       grant/revoke ** to **
+Create session          --连接数据库,登录权限
+Create sequence         --创建序列
+Create synonym          --创建同名对象
+Create table            --创建表
+Create any table        --创建任何模式的表
+Drop table              --删除表
+Create procedure        --创建存储过程
+Execute any procedure   --执行任何模式的存储过程
+Create user             --创建用户
+Create view             --创建视图
+Drop user               --删除用户
+Drop any table          --删除任何模式的表
+dba                     --授予DBA权限
+select any table        --授予查询任何表  
+select any dictionary   --授予查询任何字典 
+unlimited session to    --授予用户使用表空间
+insert table to         --插入表的权限
+update table to         --修改表的权限
+
 grant connect, resource, dba to username;
 GRANT CREATE USER, DROP USER, ALTER USER, CREATE ANY VIEW, DROP ANY VIEW,EXP_FULL_DATABASE,IMP_FULL_DATABASE, DBA,CONNECT,RESOURCE,CREATE SESSION TO  caiyl;  
-grant dba to lxg;--授予DBA权限  
-grant unlimited tablespace to lxg;--授予不限制的表空间  
-grant select any table to lxg;--授予查询任何表  
-grant select any dictionary to lxg;--授予 查询 任何字典 
-GRANT CREATE ANY SYNONYM TO fcs;
 GRANT CREATE PUBLIC DATABASE LINK TO fcs;
 GRANT CONNECT TO fcs;
 GRANT RESOURCE TO fcs;
@@ -17,84 +78,3 @@ GRANT CREATE ANY PROCEDURE TO fcs;
 GRANT DEBUG ANY PROCEDURE TO fcs;
 GRANT DEBUG CONNECT SESSION TO fcs;
 GRANT EXECUTE ANY PROCEDURE TO fcs;
-GRANT DBA to fcs;
-
-*******************取消权限**********************
-revoke dba from fcs
-
-
-1、   linux 下 oracle 的启动
-以 oracle 身份登录  
-启动    lsnrctl start
-登录    sqplus /nolog
-连接数据库    connect  /as   sysdba
-启动数据库    startup
-关闭数据库    shutdown immediate
-2、   在数据中创建用户名
-启动数据库后创建用户名
-连接超级用户    connect system/admin    system 系统用户名字   admin 密码
-创建用户名字    create user sha identified by admin   用户名： sha 密码 :admin
-           可以写    Default tablespace user   // 指定存储对象使用的默认空间表 默认是 system
-               Temporary tablespace temp; // 保存临时对象所使用的空间表 默认是 system
-        上面的俩行，可以写 空间表为 user 临时为 temp ；不写就默认
-3、   添加用户的权限
-Grant 是授予权限的 如：
-     Grant create session to sha ； // 授予 sha 连接数据的权限
-  系统权限如下：
-系统特权
-允许执行的操作
-Create session
-连接数据库
-Create sequence
-创建序列
-Create synonym
-创建同名对象
-Create table
-创建表
-Create any table
-创建任何模式的表
-Drop table
-删除表
-Create procedure
-创建存储过程
-Execute any procedure
-执行任何模式的存储过程
-Create user
-创建用户
-Create view
-创建视图
-Drop user
-删除用户
-Drop any table
-删除任何模式的表
-4、   向用户授予系统特权
-Grant execute any procedure to sha with admin option 
-此句意思为为 sha 用户创建系统特权并且可以用 sha 为别的用户授予权限
-连接 sha 用户   connect sha/admin
-可以创建别的用户
-、查看用户权限
-进入 sha 用户 connect sha/admin
-Select * from user_sys_privs; 可以查看到一个列表，
-列代表 用户名 权限 是否可以给别的用户附加权限（ N 、 Y ）  
-行代表 权限都有那些
-、撤销用户授予的权限
-必须连接 connect system/admin
-撤销权限   revoke 是系统撤销权限的关键词
-Revoke execute any procedure from sha ；
-、更改用户密码
-进入 sha 用户   connect sha/admin
-Password       输入旧密码   输入新密码俩边    OK
-或者 用 alter user sha identified by xinmima
-、删除用户
-Connect system/admin
-Drop user sha ；
-、为用户授予角色
-Grant dba to sha ；
-Grant connect to sha ；
-Linux 下的 plsql  创建用户
-create user sha identified by admin
-Default tablespace user
-Temporary tablespace temp;
-Granr unlimited tablespace to sha ；     // 权限
-Grant dba to sha ；                   // 角色
-Grant connect to sha ；
