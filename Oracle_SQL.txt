@@ -98,3 +98,28 @@ ONLINE_
            4 YES 3.4360E+10    4194302          160    4194304         512
 ONLINE
 
+3. alter table 表名 add constraint 约束名 约束内容
+Oracle创建表和约束
+create table INFOS(
+     STUID      varchar2(7) not null,         --学号 学号=‘S’+班号+2位序号
+     STUNAME    varchar2(10) not null,        --姓名
+     GENDER     varchar2(2) not null,         --性别 
+     AGE        number(2) not null,           --年龄
+     SEAT       number(2) not null,           --座号
+     ENROLLDATE    date,                      --入学时间
+     STUADDRESS       varchar2(50) default '地址不详',     --住址
+     CLASSNO          varchar2(4) not null,               --班号 班号=学期序号+班级序号 
+);
+
+alter table INFOS add constraint pk_INFOS primary key(STUID)  
+
+alter table INFOS add constraint ck_INFOS_gender check(GENDER = '男' or GENDER = '女')  
+
+alter table INFOS add constraint ck_INFOS_SEAT check(SEAT >=0 and SEAT <=50) 
+
+alter table INFOS add constraint ck_INFOS_AGE check(AGE >=0 and AGE<=100) 
+
+alter table INFOS add constraint ck_INFOS_CLASSNO check((CLASSNO >='1001' and CLASSNO<='1999') or
+(CLASSNO >='2001' and CLASSNO<='2999'))  
+
+alter table INFOS add constraint un_STUNAME unique(STUNAME)
