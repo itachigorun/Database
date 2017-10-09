@@ -124,6 +124,27 @@ alter table INFOS add constraint ck_INFOS_CLASSNO check((CLASSNO >='1001' and CL
 
 alter table INFOS add constraint un_STUNAME unique(STUNAME)
 
+5 禁用主键
+语法：
+ALTER TABLE table_name DISABLE CONSTRAINT constraint_name;  
+示例：
+alter table tb_employees disable constraint tb_employees_pk;  
+
+6 启用主键
+语法：
+ALTER TABLE table_name ENABLE CONSTRAINT constraint_name;  
+示例：
+alter table tb_employees enable constraint tb_employees_pk;  
+
+7 删除主键
+语法：
+ALTER TABLE table_name DROP CONSTRAINT constraint_name;  
+示例：
+alter table tb_employees drop constraint tb_employees_pk;  
+alter table tb_departments drop constraint tb_departments_pk;  
+alter table TB_PK_EXAMPLE drop constraint TB_PK_EXAMPLE_PK;  
+alter table TB_SUPPLIER_EX drop constraint TB_SUPPLIER_EX_PK;  
+
 4.Oracle表字段的增加、删除、修改和重命名
 增加字段语法：
 alter table tablename add (column datatype [default value][null/not null],….);
@@ -140,7 +161,6 @@ alter table tablename modify (column datatype [default value][null/not null],…
 alter table 表名 modify (字段名 字段类型 默认值 是否为空);
 例：
 alter table sf_InvoiceApply modify (BILLCODE number(4));
-
 
 删除字段的语法：
 alter table tablename drop (column);
@@ -160,3 +180,5 @@ alter table sf_InvoiceApply rename column PIC to NEWPIC;
 alter table 表名 rename to  新表名
 例：
 alter table sf_InvoiceApply rename to  sf_New_InvoiceApply;
+
+
