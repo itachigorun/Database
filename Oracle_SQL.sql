@@ -123,3 +123,40 @@ alter table INFOS add constraint ck_INFOS_CLASSNO check((CLASSNO >='1001' and CL
 (CLASSNO >='2001' and CLASSNO<='2999'))  
 
 alter table INFOS add constraint un_STUNAME unique(STUNAME)
+
+4.Oracle表字段的增加、删除、修改和重命名
+增加字段语法：
+alter table tablename add (column datatype [default value][null/not null],….);
+说明：
+alter table 表名 add (字段名 字段类型 默认值 是否为空);
+例：
+alter table sf_users add (HeadPIC blob);
+例：
+alter table sf_users add (userName varchar2(30) default '空' not null);
+
+修改字段的语法：
+alter table tablename modify (column datatype [default value][null/not null],….); 
+说明：
+alter table 表名 modify (字段名 字段类型 默认值 是否为空);
+例：
+alter table sf_InvoiceApply modify (BILLCODE number(4));
+
+
+删除字段的语法：
+alter table tablename drop (column);
+说明：
+alter table 表名 drop column 字段名;
+例：
+alter table sf_users drop column HeadPIC;
+
+字段的重命名：
+说明：
+alter table 表名 rename  column  列名 to 新列名   （其中：column是关键字）
+例：
+alter table sf_InvoiceApply rename column PIC to NEWPIC;
+
+表的重命名：
+说明：
+alter table 表名 rename to  新表名
+例：
+alter table sf_InvoiceApply rename to  sf_New_InvoiceApply;
