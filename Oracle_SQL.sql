@@ -181,4 +181,212 @@ alter table 表名 rename to  新表名
 例：
 alter table sf_InvoiceApply rename to  sf_New_InvoiceApply;
 
+8.SQL增删改查语句
+1、INSERT INTO 语句
+(1)插入新的一行数据
+INSERT INTO Persons VALUES ('Gates', 'Bill', 'Xuanwumen 10', 'Beijing');  
+(2)在指定的列中插入数据
+INSERT INTO Persons (LastName, Address) VALUES ('Wilson', 'Champs-Elysees');  
+
+2、SELECT INTO 语句可用于创建表的备份复件
+(1)在建表时复制所有数据：
+create table userinfo_new as select * from userinfo;  
+(2)在建表时复制部分数据：
+create table userinfo_new1 as select id,username from userinfo;  
+(3)在添加时复制所有数据：
+insert into userinfo_new select * from userinfo;  
+(4)在添加时复制部分数据：
+insert into userinfo_new(id,username) select id,username from userinfo;  
+
+3、Update 语句
+(1)无条件更新:
+update userinfo set userpwd='111',email='111@126.com';  
+(2)有条件更新:
+update userinfo set userpwd='123456' where username='xxx';  
+
+4、DELETE 语句
+(1)无条件删除：
+dalete from userinfo;  
+(2)有条件删除：
+delete from userinfo where username='yyy';  
+
+5、SELECT 语句
+(1)查询所有字段:
+select * from users;  
+(2)查询指定字段:
+select username,salary from users;  
+(3)SELECT DISTINCT 语句
+如需从"Company"列中仅选取唯一不同的值，我们需要使用 SELECT DISTINCT 语句：
+SELECT DISTINCT Company FROM Orders;   
+
+3、SQL where
+选取居住在城市 "Beijing" 中的人，我们需要向 SELECT 语句添加 WHERE 子句：
+SELECT * FROM Persons WHERE City='Beijing';  
+注意：SQL 使用单引号来环绕文本值（大部分数据库系统也接受双引号）。如果是数值，请不要使用引号。
+4、SQL AND & OR
+(1)使用 AND 来显示所有姓为 "Carter" 并且名为 "Thomas" 的人：
+SELECT * FROM Persons WHERE FirstName='Thomas' AND LastName='Carter';  
+(2)使用 OR 来显示所有姓为 "Carter" 或者名为 "Thomas" 的人：
+SELECT * FROM Persons WHERE firstname='Thomas' OR lastname='Carter';  
+
+5、ORDER BY 语句用于对结果集进行排序。
+(1)以字母顺序显示公司名称：
+SELECT Company, OrderNumber FROM Orders ORDER BY Company;  
+(2)以字母顺序显示公司名称（Company），并以数字顺序显示顺序号（OrderNumber）：
+SELECT Company, OrderNumber FROM Orders ORDER BY Company, OrderNumber;  
+(3)以逆字母顺序显示公司名称：
+SELECT Company, OrderNumber FROM Orders ORDER BY Company DESC;  
+(4)以逆字母顺序显示公司名称，并以数字顺序显示顺序号：
+SELECT Company, OrderNumber FROM Orders ORDER BY Company DESC, OrderNumber ASC;  
+
+6、TOP 子句
+SQL Server 的语法：
+从"Persons" 表中选取头两条记录:
+SELECT TOP 2 * FROM Persons;  
+从"Persons" 表中选取 50% 的记录:
+SELECT TOP 50 PERCENT * FROM Persons;  
+MySQL 语法:
+从"Persons" 表中选取头两条记录:
+SELECT * FROM Persons LIMIT 2;  
+Oracle 语法:
+从"Persons" 表中选取头两条记录:
+SELECT * FROM Persons WHERE ROWNUM <= 2;  
+
+7、LIKE 操作符、SQL 通配符
+(1)从"Persons" 表中选取居住在以 "N" 开始的城市里的人：
+SELECT * FROM Persons WHERE City LIKE 'N%';  
+(2)从"Persons" 表中选取居住在以 "g" 结尾的城市里的人：
+SELECT * FROM Persons WHERE City LIKE '%g';  
+(3)从 "Persons" 表中选取居住在包含 "lon" 的城市里的人：
+SELECT * FROM Persons WHERE City LIKE '%lon%' ;  
+(4)从 "Persons" 表中选取居住在不包含 "lon" 的城市里的人：
+SELECT * FROM Persons WHERE City NOT LIKE '%lon%';  
+(5)从"Persons" 表中选取名字的第一个字符之后是 "eorge" 的人：
+SELECT * FROM Persons WHERE FirstName LIKE '_eorge';  
+(6)从"Persons" 表中选取的这条记录的姓氏以 "C" 开头，然后是一个任意字符，然后是 "r"，然后是任意字符，然后是 "er"：
+SELECT * FROM Persons WHERE LastName LIKE 'C_r_er';  
+(7)从"Persons" 表中选取居住的城市以 "A" 或 "L" 或 "N" 开头的人：
+SELECT * FROM Persons WHERE City LIKE '[ALN]%';  
+(8)从"Persons" 表中选取居住的城市不以 "A" 或 "L" 或 "N" 开头的人：
+SELECT * FROM Persons WHERE City LIKE '[!ALN]%';  
+
+8、IN 操作符
+从表中选取姓氏为 Adams 和 Carter 的人：
+SELECT * FROM Persons WHERE LastName IN ('Adams','Carter');  
+
+9、BETWEEN 操作符
+以字母顺序显示介于 "Adams"（包括）和 "Carter"（不包括）之间的人：
+SELECT * FROM Persons WHERE LastName BETWEEN 'Adams' AND 'Carter';  
+注意：不同的数据库对 BETWEEN...AND 操作符的处理方式是有差异的。某些数据库会列出介于 "Adams" 和 "Carter" 之间的人，但不包括 "Adams" 和 "Carter" ；某些数据库会列出介于 "Adams" 和 "Carter" 之间并包括 "Adams" 和 "Carter" 的人；而另一些数据库会列出介于 "Adams" 和 "Carter" 之间的人，包括 "Adams" ，但不包括 "Carter" 。
+所以，请检查你的数据库是如何处理 BETWEEN....AND 操作符的！
+
+10、为列名称和表名称指定别名（Alias）
+(1)表的 SQL Alias 语法
+SELECT po.OrderID, p.LastName, p.FirstName FROM Persons AS p, Product_Orders AS po WHERE p.LastName='Adams' AND p.FirstName='John';  
+(2)列的 SQL Alias 语法
+SELECT LastName AS Family, FirstName AS Name FROM Persons;  
+
+10、Join(Inner Join)、Left Join(Left Outer Join)、Right Join(Right Outer Join)、Full Join(Full Outer Join)
+"Persons" 表：
+Id_P	LastName	FirstName	Address	City
+1	Adams	John	Oxford Street	London
+2	Bush	George	Fifth Avenue	New York
+3	Carter	Thomas	Changan Street	Beijing
+"Orders" 表：
+Id_O	OrderNo	Id_P
+1	77895	3
+2	44678	3
+3	22456	1
+4	24562	1
+5	34764	65 
+(1)Join
+用where 联表查询：
+SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons, Orders WHERE Persons.Id_P = Orders.Id_P ;  
+用Join(Inner Join)查询：INNER JOIN 关键字在表中存在至少一个匹配时返回行。如果 "Persons" 中的行在 "Orders" 中没有匹配，就不会列出这些行。
+SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons INNER JOIN Orders ON Persons.Id_P = Orders.Id_P ORDER BY Persons.LastName;  
+LastName	FirstName	OrderNo
+Adams	John	22456
+Adams	John	24562
+Carter	Thomas	77895
+Carter	Thomas	44678
+(2)左外连接Left Join(Left Outer Join)：LEFT JOIN 关键字会从左表 (Persons) 那里返回所有的行，即使在右表 (Orders) 中没有匹配的行。
+SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons LEFT JOIN Orders ON Persons.Id_P=Orders.Id_P ORDER BY Persons.LastName;  
+LastName	FirstName	OrderNo
+Adams	John	22456
+Adams	John	24562
+Carter	Thomas	77895
+Carter	Thomas	44678
+Bush	George	  
+(3)右外连接Right Join(Right Outer Join)：RIGHT JOIN 关键字会从右表 (Orders) 那里返回所有的行，即使在左表 (Persons) 中没有匹配的行。
+SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons RIGHT JOIN Orders ON Persons.Id_P=Orders.Id_P ORDER BY Persons.LastName;  
+LastName	FirstName	OrderNo
+Adams	John	22456
+Adams	John	24562
+Carter	Thomas	77895
+Carter	Thomas	44678
+ 	 	34764 
+(4)全连接Full Join(Full Outer Join)：FULL JOIN 关键字会从左表 (Persons) 和右表 (Orders) 那里返回所有的行。如果 "Persons" 中的行在表 "Orders" 中没有匹配，或者如果 "Orders" 中的行在表 "Persons" 中没有匹配，这些行同样会列出。
+SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons FULL JOIN Orders ON Persons.Id_P=Orders.Id_P ORDER BY Persons.LastName;  
+LastName	FirstName	OrderNo
+Adams	John	22456
+Adams	John	24562
+Carter	Thomas	77895
+Carter	Thomas	44678
+Bush	George	 
+ 	 	34764
+11、Union：UNION 操作符用于合并两个或多个 SELECT 语句的结果集。
+注意：UNION 内部的 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每条 SELECT 语句中的列的顺序必须相同。UNION 结果集中的列名总是等于 UNION 中第一个 SELECT 语句中的列名。
+Employees_China:
+E_ID	E_Name
+01	Zhang, Hua
+02	Wang, Wei
+03	Carter, Thomas
+04	Yang, Ming
+Employees_USA:
+E_ID	E_Name
+01	Adams, John
+02	Bush, George
+03	Carter, Thomas
+04	Gates, Bill
+(1)UNION命令列出所有在中国和美国的不同的雇员名：
+SELECT E_Name FROM Employees_China UNION SELECT E_Name FROM Employees_USA;  
+E_Name
+Zhang, Hua
+Wang, Wei
+Carter, Thomas
+Yang, Ming
+Adams, John
+Bush, George
+Gates, Bill (2)UNION ALL 命令列出在中国和美国的所有的雇员：
+SELECT E_Name FROM Employees_China UNION ALL SELECT E_Name FROM Employees_USA;  
+E_Name
+Zhang, Hua
+Wang, Wei
+Carter, Thomas
+Yang, Ming
+Adams, John
+Bush, George
+Carter, Thomas
+Gates, Bill
+
+12、SQL 的 NULL 值处理
+(1)选取在 "Address" 列中带有 NULL 值的记录:
+SELECT LastName,FirstName,Address FROM Persons WHERE Address IS NULL;  
+(2)选取在 "Address" 列中不带有 NULL 值的记录:
+SELECT LastName,FirstName,Address FROM Persons WHERE Address IS NOT NULL;  
+
+13、SQL ISNULL()、NVL()、IFNULL() 和 COALESCE() 函数
+P_Id	ProductName	UnitPrice	UnitsInStock	UnitsOnOrder
+1	computer	699	25	15
+2	printer	365	36	 
+3	telephone	280	159	57 在统计时，上表中UnitsOnOrder字段值如果为null不利于计算，所以要用函数将null值当做0计算。
+SQL Server / MS Access:
+SELECT ProductName,UnitPrice*(UnitsInStock+ISNULL(UnitsOnOrder,0)) FROM Products;  
+Oracle:
+SELECT ProductName,UnitPrice*(UnitsInStock+NVL(UnitsOnOrder,0)) FROM Products;  
+MySQL:
+SELECT ProductName,UnitPrice*(UnitsInStock+IFNULL(UnitsOnOrder,0)) FROM Products;  
+或
+SELECT ProductName,UnitPrice*(UnitsInStock+COALESCE(UnitsOnOrder,0)) FROM Products;  
+
 
