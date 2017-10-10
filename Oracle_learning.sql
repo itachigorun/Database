@@ -107,6 +107,9 @@ exp t1/t1@orcl file=./test.dmp tables=student,class
 4).将数据库中student表中filed字段中等于table的数据导出 
 exp t1/t1@orcl file=./test.dmp tables=student query=\" where filed=\'table\' \"
 
+5).用exp命令导出表结构，不导出表数据。只需在命令行里加一个参数rows=n即可。表示不导出表数据。
+exp username/pwd@sid file=d:/data/bak.dmp owner=(user)rows=n  
+
 3.
 查看dump文件的一些基本信息,列出dump文件前十行ASCII信息
 $ strings test.dmp | head -10

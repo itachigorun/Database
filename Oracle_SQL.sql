@@ -134,7 +134,7 @@ alter table tb_employees disable constraint tb_employees_pk;
 语法：
 ALTER TABLE table_name ENABLE CONSTRAINT constraint_name;  
 示例：
-alter table tb_employees enable constraint tb_employees_pk;  
+ALTER table tb_employees enable constraint tb_employees_pk;  
 
 6.删除主键
 语法：
