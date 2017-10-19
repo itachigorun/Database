@@ -122,3 +122,22 @@ $  strings fep.dmp | grep "CREATE TABLE "|awk '{print $3} '|sed 's/"//g'
 查询数据库日志操作模式
 SQL> archive log list 
 
+
+查询数据库名(db_name)
+1.SQL> select name from v$database;
+2.SQL> show parameter db;
+
+查询实例名(system identifier:SID)
+1.SQL> select instance_name from v$instance;
+2.SQL> show parameter instance;
+
+查询数据库域名(db_domain)
+1.SQL> select value from v$parameter where name = 'db_domain';
+2.SQL> show parameter domain
+
+查询数据库服务名(service_name) 缺省：db_name.db_domain 即等于全局数据库 该值可以不等于SID
+1.SQL> select value from v$parameter where name = 'service_name';
+2.SQL> show parameter service_name
+
+全局数据库名(global_name)=数据库名+数据库域名 db_name.db_domain  表示唯一一个数据库
+如果数据库有域名，则数据库服务名就是全局数据库名；否则，数据库服务名与数据库名相同。
