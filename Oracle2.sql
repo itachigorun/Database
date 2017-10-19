@@ -39,7 +39,7 @@ LOWER(char)用于将字符转换为小写形式
 INITCAP(char)用于将字符串每个单词的首字符大写，其他字符小写，单词之间用空格和非字母分隔
 如果这三个函数的输入参数是NULL值，仍然返回NULL值。
 SELECT UPPER('hello world'), LOWER('HELLO WORld'), INITCAP('hello world') FROM dual;
-将列出参数”hello world"的大写、小写、和首字符大写的形式。一般用来查询数据表中不确定大小写的情况。
+将列出参数"hello world"的大写、小写、和首字符大写的形式。一般用来查询数据表中不确定大小写的情况。
 
 5.TRIM、LTRIM、RTRIM
 这三个TRIM函数的作用都是截去子字符串。
@@ -213,7 +213,7 @@ MONTHS_BETWEEN(date1,date2):计算date1和date2两个日期值之间间隔了多
 
 8.NEXT_DAY
 NEXT_DAY(day,char):返回date日期数据的下一个周几，周几是由参数char来决定的。在中文环境中，直接使用“星期三”这种形式，英文环境下，需要使用
-“WEDNESDAY"这种英文的周几，为避免麻烦，可以直接使用数字1-7表示周日-周六。
+"WEDNESDAY"这种英文的周几，为避免麻烦，可以直接使用数字1-7表示周日-周六。
 注意，NEXT_DAY不要按照字面意思理解为明天，是返回下个周几是几号。
 
 9.LEAST、GERATEST
