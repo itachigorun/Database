@@ -287,53 +287,59 @@ SELECT po.OrderID, p.LastName, p.FirstName FROM Persons AS p, Product_Orders AS 
 SELECT LastName AS Family, FirstName AS Name FROM Persons;  
 
 10、Join(Inner Join)、Left Join(Left Outer Join)、Right Join(Right Outer Join)、Full Join(Full Outer Join)
+在使用left jion时，on和where条件的区别如下： 
+1、on条件是在生成临时表时使用的条件，它不管on中的条件是否为真，都会返回左边表中的记录。 
+2、where条件是在临时表生成好后，再对临时表进行过滤的条件。这时已经没有left join的含义（必须返回左边表的记录）了，条件不为真的就全部过滤掉。 
+原因就是left join,right join,full join的特殊性，不管on上的条件是否为真都会返回left或right表中的记录，full则具有left和right的特性的并集。
+而inner jion没这个特殊性，则条件放在on中和where中，返回的结果集是相同的。
 "Persons" 表：
-Id_P	LastName	FirstName	Address	City
-1	Adams	John	Oxford Street	London
-2	Bush	George	Fifth Avenue	New York
-3	Carter	Thomas	Changan Street	Beijing
+Id_P	LastName	FirstName      Address	        City
+1	Adams	        John	       Oxford Street	London
+2	Bush	        George	       Fifth Avenue	New York
+3	Carter	        Thomas	       Changan Street	Beijing
 "Orders" 表：
-Id_O	OrderNo	Id_P
-1	77895	3
-2	44678	3
-3	22456	1
-4	24562	1
-5	34764	65 
+Id_O	OrderNo    Id_P
+1	77895	   3
+2	44678	   3
+3	22456	   1
+4	24562	   1
+5	34764	   65 
 (1)Join
 用where 联表查询：
 SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons, Orders WHERE Persons.Id_P = Orders.Id_P ;  
 用Join(Inner Join)查询：INNER JOIN 关键字在表中存在至少一个匹配时返回行。如果 "Persons" 中的行在 "Orders" 中没有匹配，就不会列出这些行。
-SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons INNER JOIN Orders ON Persons.Id_P = Orders.Id_P ORDER BY Persons.LastName;  
+ELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons INNER JOIN Orders ON Persons.Id_P = Orders.Id_P ORDER BY Persons.LastName;  
 LastName	FirstName	OrderNo
-Adams	John	22456
-Adams	John	24562
-Carter	Thomas	77895
-Carter	Thomas	44678
+Adams	        John	        22456
+Adams	        John	        24562
+Carter	        Thomas	        77895
+Carter	        Thomas	        44678
 (2)左外连接Left Join(Left Outer Join)：LEFT JOIN 关键字会从左表 (Persons) 那里返回所有的行，即使在右表 (Orders) 中没有匹配的行。
 SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons LEFT JOIN Orders ON Persons.Id_P=Orders.Id_P ORDER BY Persons.LastName;  
 LastName	FirstName	OrderNo
-Adams	John	22456
-Adams	John	24562
-Carter	Thomas	77895
-Carter	Thomas	44678
-Bush	George	  
+Adams	        John	        22456
+Adams	        John	        24562
+Carter	        Thomas	        77895
+Carter	        Thomas	        44678
+Bush	        George	  
 (3)右外连接Right Join(Right Outer Join)：RIGHT JOIN 关键字会从右表 (Orders) 那里返回所有的行，即使在左表 (Persons) 中没有匹配的行。
 SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons RIGHT JOIN Orders ON Persons.Id_P=Orders.Id_P ORDER BY Persons.LastName;  
 LastName	FirstName	OrderNo
-Adams	John	22456
-Adams	John	24562
-Carter	Thomas	77895
-Carter	Thomas	44678
- 	 	34764 
-(4)全连接Full Join(Full Outer Join)：FULL JOIN 关键字会从左表 (Persons) 和右表 (Orders) 那里返回所有的行。如果 "Persons" 中的行在表 "Orders" 中没有匹配，或者如果 "Orders" 中的行在表 "Persons" 中没有匹配，这些行同样会列出。
+Adams	        John	        22456
+Adams	        John	        24562
+Carter	        Thomas	        77895
+Carter	        Thomas	        44678
+ 	 	                34764 
+(4)全连接Full Join(Full Outer Join)：FULL JOIN 关键字会从左表 (Persons) 和右表 (Orders) 那里返回所有的行。如果 "Persons" 中的行在表 "Orders" 中没有匹配，
+或者如果 "Orders" 中的行在表 "Persons" 中没有匹配，这些行同样会列出。
 SELECT Persons.LastName, Persons.FirstName, Orders.OrderNo FROM Persons FULL JOIN Orders ON Persons.Id_P=Orders.Id_P ORDER BY Persons.LastName;  
 LastName	FirstName	OrderNo
-Adams	John	22456
-Adams	John	24562
-Carter	Thomas	77895
-Carter	Thomas	44678
-Bush	George	 
- 	 	34764
+Adams	        John	        22456
+Adams	        John	        24562
+Carter	        Thomas	        77895
+Carter	        Thomas	        44678
+Bush	        George	 
+ 	 	                34764
 11、Union：UNION 操作符用于合并两个或多个 SELECT 语句的结果集。
 注意：UNION 内部的 SELECT 语句必须拥有相同数量的列。列也必须拥有相似的数据类型。同时，每条 SELECT 语句中的列的顺序必须相同。UNION 结果集中的列名总是等于 UNION 中第一个 SELECT 语句中的列名。
 Employees_China:
@@ -377,9 +383,10 @@ SELECT LastName,FirstName,Address FROM Persons WHERE Address IS NOT NULL;
 
 13、SQL ISNULL()、NVL()、IFNULL() 和 COALESCE() 函数
 P_Id	ProductName	UnitPrice	UnitsInStock	UnitsOnOrder
-1	computer	699	25	15
-2	printer	365	36	 
-3	telephone	280	159	57 在统计时，上表中UnitsOnOrder字段值如果为null不利于计算，所以要用函数将null值当做0计算。
+1	computer	699	        25	        15
+2	printer 	365	        36	 
+3	telephone	280	        159	        57 
+在统计时，上表中UnitsOnOrder字段值如果为null不利于计算，所以要用函数将null值当做0计算。
 SQL Server / MS Access:
 SELECT ProductName,UnitPrice*(UnitsInStock+ISNULL(UnitsOnOrder,0)) FROM Products;  
 Oracle:
@@ -389,4 +396,11 @@ SELECT ProductName,UnitPrice*(UnitsInStock+IFNULL(UnitsOnOrder,0)) FROM Products
 或
 SELECT ProductName,UnitPrice*(UnitsInStock+COALESCE(UnitsOnOrder,0)) FROM Products;  
 
+14.Group by having
+显示每个地区的总人口数和总面积.仅显示那些面积超过1000000的地区。
+SELECT region, SUM(population), SUM(area) FROM bbc
+GROUP BY region 
+HAVING SUM(area)>1000000
+在这里，我们不能用where来筛选超过1000000的地区，因为表中不存在这样一条记录。
+相反，HAVING子句可以让我们筛选成组后的各组数据.
 
