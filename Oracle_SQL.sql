@@ -187,16 +187,16 @@ alter table sf_InvoiceApply rename to  sf_New_InvoiceApply;
 INSERT INTO Persons VALUES ('Gates', 'Bill', 'Xuanwumen 10', 'Beijing');  
 (2)在指定的列中插入数据
 INSERT INTO Persons (LastName, Address) VALUES ('Wilson', 'Champs-Elysees');  
-
-2、SELECT INTO 语句可用于创建表的备份复件
-(1)在建表时复制所有数据：
-create table userinfo_new as select * from userinfo;  
-(2)在建表时复制部分数据：
-create table userinfo_new1 as select id,username from userinfo;  
 (3)在添加时复制所有数据：
 insert into userinfo_new select * from userinfo;  
 (4)在添加时复制部分数据：
 insert into userinfo_new(id,username) select id,username from userinfo;  
+
+2、create 语句可用于创建表的备份复件
+(1)在建表时复制所有数据：
+create table userinfo_new as select * from userinfo;  
+(2)在建表时复制部分数据：
+create table userinfo_new1 as select id,username from userinfo;  
 
 3、Update 语句
 (1)无条件更新:
@@ -206,7 +206,7 @@ update userinfo set userpwd='123456' where username='xxx';
 
 4、DELETE 语句
 (1)无条件删除：
-dalete from userinfo;  
+delete from userinfo;  
 (2)有条件删除：
 delete from userinfo where username='yyy';  
 
@@ -407,6 +407,8 @@ HAVING SUM(area)>1000000
 
 15.to_char来转换timestamp——>date：
 SQL>select to_date(to_char(systimestamp,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss') from dual
-
+SQL>select Systimestamp+0 FROM DUAL;
+SQL>Select Cast(Systimestamp As Date) From dual;
 date ——>timestamp：
 SQL>select to_timestamp(to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss') from dual
+SQL>Select to_timestamp('2006-01-01 12:10:10.1','yyyy-mm-dd hh24:mi:ss.ff') From dual;
