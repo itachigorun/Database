@@ -183,13 +183,14 @@ select to_date('2005-12-25,13:25:59','yyyy-mm-dd,hh24:mi:ss') from dual //显示
 4.TO_CHAR
 TO_CHAR的作用是将其它类型(日期，数值)的数据转换为字符类型，主要应用在日期类型上。语法格式：
 TO_CHAR(date,fmt) 其中fmt是格式，将日期类型数据date按照fmt格式输出字符串，例如
-select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') as nowTime from dual;   //日期转化为字符串   
-select to_char(sysdate,'yyyy') as nowYear   from dual;   //获取时间的年   
-select to_char(sysdate,'mm')    as nowMonth from dual;   //获取时间的月   
-select to_char(sysdate,'dd')    as nowDay    from dual;   //获取时间的日   
-select to_char(sysdate,'hh24') as nowHour   from dual;   //获取时间的时   
-select to_char(sysdate,'mi')    as nowMinute from dual;   //获取时间的分   
-select to_char(sysdate,'ss')    as nowSecond from dual;   //获取时间的秒
+select to_char(sysdate,'yyyy-mm-dd hh24:mi:ss') as nowTime from dual;   //日期转化为字符串   2017-10-16 02:02:02
+select to_char(sysdate,'yyyymmdd') as nowTime from dual;   //日期转化为字符串   20171016
+select to_char(sysdate,'yyyy')  as nowYear   from dual;   //获取时间的年   2017
+select to_char(sysdate,'mm')    as nowMonth  from dual;   //获取时间的月   10
+select to_char(sysdate,'dd')    as nowDay    from dual;   //获取时间的日   17
+select to_char(sysdate,'hh24')  as nowHour   from dual;   //获取时间的时   02
+select to_char(sysdate,'mi')    as nowMinute from dual;   //获取时间的分   02
+select to_char(sysdate,'ss')    as nowSecond from dual;   //获取时间的秒   02
 
 select to_char('12345.67') from dual; --返回结果为12345.67
 select to_char('12345.67','99,999.99') from dual; --返回结果为12,345.67

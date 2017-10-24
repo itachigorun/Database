@@ -404,3 +404,9 @@ HAVING SUM(area)>1000000
 在这里，我们不能用where来筛选超过1000000的地区，因为表中不存在这样一条记录。
 相反，HAVING子句可以让我们筛选成组后的各组数据.
 
+
+15.to_char来转换timestamp——>date：
+SQL>select to_date(to_char(systimestamp,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss') from dual
+
+date ——>timestamp：
+SQL>select to_timestamp(to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss') from dual
