@@ -615,7 +615,7 @@ and s.paddr=o.addr
 4全表扫描的表
 SQL>col name for a30
 SQL>select name,value from v$sysstat
-2 where name in (’table scans(short tables)’,'table scans(long tables)’);
+2 where name in (’table scans(short tables)’,'table scans(long tables)');
 5
 查询SQL语句执行时,硬语法分析的次数
 select name,value
