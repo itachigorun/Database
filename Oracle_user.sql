@@ -48,7 +48,7 @@ SQLPlus 在连接时通常有
 create user name identified by password default tablespace tbs_default temporary tablespace tbs_tempem
 
 4.
-添加/取消用户的权限       grant/revoke ** to **
+添加/取消用户的权限       grant/revoke ** to/from **
 Create session          --连接数据库,登录权限
 Create sequence         --创建序列
 Create synonym          --创建同名对象

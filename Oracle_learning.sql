@@ -141,3 +141,9 @@ SQL> archive log list
 
 全局数据库名(global_name)=数据库名+数据库域名 db_name.db_domain  表示唯一一个数据库
 如果数据库有域名，则数据库服务名就是全局数据库名；否则，数据库服务名与数据库名相同。
+
+
+查询用户的所有表
+SQL> select table_name from tab;
+SQL> select table_name from user_tables;
+SQL> select tname from tab;
