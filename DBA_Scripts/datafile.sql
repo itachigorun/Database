@@ -130,3 +130,12 @@ select tablespace_name,
            and f.tablespace_name = h.tablespace_name
          group by h.tablespace_name)
 order by 4;
+
+
+Oracle 查询单表占用空间
+SELECT segment_name AS TABLENAME,
+       BYTES B,
+       BYTES / 1024 KB,
+       BYTES / 1024 / 1024 MB
+  FROM user_segments
+where segment_name = upper('tablename');
