@@ -139,3 +139,21 @@ SELECT segment_name AS TABLENAME,
        BYTES / 1024 / 1024 MB
   FROM user_segments
 where segment_name = upper('tablename');
+
+
+select sum("已使用容量(MB)") as "数据库容量(MB)" from (select a.tablespace_name,a.bytes/1024/1024 "总容量(MB)",(a.bytes-b.bytes)/1024/1024 "已使用容量(MB)",b.bytes/1024/1024 "剩余容量(MB)",
+   round(((a.bytes-b.bytes)/a.bytes)*100,2) "使用百分比"
+   from
+   (select tablespace_name,sum(bytes) bytes from dba_data_files group by tablespace_name) a,
+   (select tablespace_name,sum(bytes) bytes,max(bytes) largest from dba_free_space group by tablespace_name) b
+   where a.tablespace_name=b.tablespace_name
+   order by ((a.bytes-b.bytes)/a.bytes) desc
+  );
+
+ select a.tablespace_name,a.bytes/1024/1024 "总容量(MB)",(a.bytes-b.bytes)/1024/1024 "已使用容量(MB)",b.bytes/1024/1024 "剩余容量(MB)",
+    round(((a.bytes-b.bytes)/a.bytes)*100,2) "使用百分比"
+    from
+    (select tablespace_name,sum(bytes) bytes from dba_data_files group by tablespace_name) a,
+    (select tablespace_name,sum(bytes) bytes,max(bytes) largest from dba_free_space group by tablespace_name) b
+    where a.tablespace_name=b.tablespace_name
+    order by ((a.bytes-b.bytes)/a.bytes) desc;
