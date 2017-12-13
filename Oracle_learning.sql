@@ -127,9 +127,13 @@ SQL> archive log list
 1.SQL> select name from v$database;
 2.SQL> show parameter db;
 
+查询数据库状态
+SQL> select status from v$instance;
+
 查询实例名(system identifier:SID)
 1.SQL> select instance_name from v$instance;
 2.SQL> show parameter instance;
+3.SQL> select instance_name,host_name from v$instance;
 
 查询数据库域名(db_domain)
 1.SQL> select value from v$parameter where name = 'db_domain';
