@@ -151,3 +151,41 @@ SQL> select status from v$instance;
 SQL> select table_name from tab;
 SQL> select table_name from user_tables;
 SQL> select tname from tab;
+
+查询连接数：
+SQL>select sid,serial#,username,program,machine,status,b.LOGON_TIME
+ from v$session b order by status,b.LOGON_TIME;
+SQL>select count(*), username, status from v$session group by username, status; 
+查询最大连接数：
+SQL>select value from v$parameter where name ='processes'
+
+SQL>select count(*) from v$process ;    --当前的数据库连接数
+SQL>select count(*) from v$session where status='ACTIVE';　--并发连接数
+
+查看表空间碎片率，fsfi小于30则表空间碎片太多
+1.
+SQL>select a.tablespace_name,
+trunc(sqrt(max(blocks)/sum(blocks))* (100/sqrt(sqrt(count(blocks)))),2) fsfi 
+from dba_free_space  a,dba_tablespaces b
+where a.tablespace_name=b.tablespace_name
+and b.contents not in('TEMPORARY','UNDO','SYSAUX')
+group by A.tablespace_name 
+order by fsfi; 
+
+2.
+SQL>
+select tablespace_name,
+       round(sqrt(max(blocks) / sum(blocks)) *
+             (100 / sqrt(sqrt(count(blocks)))),
+             2) FSFI,
+       (case
+         when sqrt(max(blocks) / sum(blocks)) *
+              (100 / sqrt(sqrt(count(blocks)))) > = 30 then
+          '正常'
+         when sqrt(max(blocks) / sum(blocks)) *
+              (100 / sqrt(sqrt(count(blocks)))) < 30 then
+          '表空间破碎化程度高，请整理'
+       end) Prompt
+  from dba_free_space
+group by tablespace_name
+order by 2;
