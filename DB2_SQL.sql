@@ -189,3 +189,11 @@ grant insert on DB2I4NB.TBL_STL_FILE_CTL to user fepdb
 
 CREATE NICKNAME DB2I4NB.TBL_STL_CARD_DTL_20180101 FOR FEPDBSVR.DB2I4NB.TBL_STL_CARD_DTL_20180101
 grant select on DB2I4NB.TBL_STL_CARD_DTL_20180101 to user fcsdb
+
+根据被读的频率来确定需要执行reorg或runstats命令的表，使用以下语句：
+select substr(table_schema,1,10) as tbschema, substr(table_name,1,30) as tbname,rows_read,rows_written,overflow_accesses,page_reorgs 
+from table (SNAPSHOT_TABLE(' ', -1)) as snapshot_table order by rows_read desc fetch first 10 rows only
+
+根据被写的次数找出10张更新最频繁的表使用以下语句:
+select substr(table_schema,1,10) as tbschema,substr(table_name,1,30) as tbname, rows_read, rows_written, overflow_accesses, page_reorgs
+ from table (SNAPSHOT_TABLE(' ', -1)) as snapshot_table order by rows_written desc fetch first 10 rows only
