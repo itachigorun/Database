@@ -197,3 +197,35 @@ from table (SNAPSHOT_TABLE(' ', -1)) as snapshot_table order by rows_read desc f
 根据被写的次数找出10张更新最频繁的表使用以下语句:
 select substr(table_schema,1,10) as tbschema,substr(table_name,1,30) as tbname, rows_read, rows_written, overflow_accesses, page_reorgs
  from table (SNAPSHOT_TABLE(' ', -1)) as snapshot_table order by rows_written desc fetch first 10 rows only
+
+db2set设置db2参数,设置后需要重启数据库然后建库才能生效
+DB2_COMPATIBILITY_VECTOR=ORA
+DB2_SKIPINSERTED=ON
+DB2_EVALUNCOMMITTED=ON
+DB2_SKIPDELETED=ON
+DB2_HASH_JOIN=YES
+DB2COMM=TCPIP
+DB2CODEPAGE=1386
+DB2_PARALLEL_IO=*
+DB2AUTOSTART=YE
+
+查询表名信息，比如所属表空间
+select * from user_tables
+
+
+
+
+//////////////////////////////////////////////////
+db2top 查看db2用到的资源
+db2 list active databases
+db2 get dbm cfg
+db2 get db cfg fcsdb
+db2 update db cfg for fcsdb using logfilesize 25600
+db2 list tablespaces show detail
+db2 list pachages for all
+
+db2 reorg table 表名
+db2 runstats on table 表名 with distribution and indexes all
+（db2i4nb/bin/runsall(db2提供的优化脚本））
+
+aix - topas命令
