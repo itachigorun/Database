@@ -229,3 +229,7 @@ db2 runstats on table 表名 with distribution and indexes all
 （db2i4nb/bin/runsall(db2提供的优化脚本））
 
 aix - topas命令
+
+
+查看表所在的表空间
+ select tabname from syscat.tables where tbspace='tbs_jndb_dtl'

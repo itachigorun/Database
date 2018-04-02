@@ -1,0 +1,54 @@
+1. tar -zxvf v9.7fp5_linuxx64_server.tar.gz
+2. cd server 
+   ./db2_install(命令安装)
+要选择另一个目录用于安装吗？[yes/no]
+
+--输入no默认安装opt下，选择yes自己输入安装目录
+
+指定下列其中一个关键字以安装 DB2 产品
+
+--输入ESE
+
+或者
+./db2setup(图形安装)
+
+3. 安装license
+4.实例所有者#groupadd db2i4jn
+受防护用户#groupadd db2fencl
+db2管理员（DAS）#groupadd db2admin
+
+5.创建用户(密码同用户名)
+#useradd  db2i4jn -g db2i4jn
+#useradd  db2fencl -g db2fencl 
+#useradd  db2admin -g db2admin
+
+6.创建管理员实例（一台服务器一个管理员）图形安装就不需要了
+#cd /opt/ibm/db2/V9.7/instance
+#./dascrt -u db2admin
+
+7.创建数据实例（一个实例一个用户，一个实例名一个服务程序名）可以在安装db2时建立实例，这一步就不用做了
+#cd /opt/ibm/db2/V9.7/instance
+#./db2icrt -u db2fencl db2i4jn
+
+8.添加db2instl服务的监听端口(端口为60000/tcp)
+#vim /etc/services
+添加以下内容：
+DB2_db2i4jn 60000/tcp #tcp/ip services for db2i4jn
+
+9.配置db2
+#su - db2i4jn
+指定db2i4jn的服务名#db2 UPDATE DBM CFG USING SVCENAME DB2_db2i4jn(图形和命令都必须执行)
+
+10.使用脚本创建数据库和表空间
+使用db2用户登陆运行下面脚本，需要进入脚本更改环境变量BASEDIR=/home/db2i4jn,改为db2i4jn
+#db2start 启动实例
+./createTableSpace.sh
+
+11.重启db2
+#db2stop force
+#db2start
+
+12. 创建表
+su - db2i4jn
+#db2 connect to jndb user db2i4jn using db2i4jn
+#db2 -tf jndb_c_server.sql
