@@ -233,3 +233,63 @@ aix - topas命令
 
 查看表所在的表空间
  select tabname from syscat.tables where tbspace='tbs_jndb_dtl'
+
+
+查询数据库实例：----------------------------------------------------------------------------
+[db2i4jn@jntestykt ~]$ db2 get instance
+当前数据库管理器实例是：db2i4jn
+
+db2 list db directory：列出当前实例下的所有数据库-----------------------------------------
+[db2i4jn@jntestykt ~]$ db2 list db directory
+系统数据库目录
+目录中的条目数 = 2
+
+数据库 1 条目：
+
+数据库别名                      = APPDB
+数据库名称                      = APPDB
+本地数据库目录                  = /home/db2i4jn
+数据库发行版级别                = f.00
+注释                           =
+目录条目类型                    = 间接
+目录数据库分区号                = 0
+备用服务器主机名                =
+备用服务器端口号                =
+
+数据库 2 条目：
+
+数据库别名                      = JNDB
+数据库名称                      = JNDB
+本地数据库目录                  = /home/db2i4jn/jndb
+数据库发行版级别                = f.00
+注释                           =
+目录条目类型                    = 间接
+目录数据库分区号                = 0
+备用服务器主机名                =
+备用服务器端口号                =
+
+
+列出当前连接的数据库：---------------------------------------------------
+[db2i4jn@jntestykt ~]$ db2 list active databases
+
+                           活动数据库
+
+数据库名称                               = APPDB
+当前连接的应用程序              = 692
+数据库路径                      = /home/db2i4jn/db2i4jn/NODE0000/SQL00001/MEMBER0000/
+
+数据库名称                               = JNDB
+当前连接的应用程序              = 359
+数据库路径                      = /home/db2i4jn/jndb/db2i4jn/NODE0000/SQL00001/MEMBER0000/
+
+db2 list applications：列出所有对数据库的连接-----------------------------------------------------
+权标识  应用程序名    应用程序    应用程序标识                  数据库   代理程序
+                        句柄                                      名称     序号
+-------- -------------- ---------- -------------------------------------------------------------- -------- -----
+DB2I4JN  db2jcc_applica 8085       ::ffff:192.168.124.41.56949.180409053855                       APPDB    1    
+DB2I4JN  FacePayConsole 8769       *LOCAL.db2i4jn.180409072459                                    APPDB    1    
+DB2I4JN  db2jcc_applica 7996       ::ffff:192.168.124.80.58413.180409052656                       APPDB    1    
+DB2I4JN  db2jcc_applica 8732       ::ffff:192.168.124.41.59248.180409070957                       APPDB    1    
+DB2I4JN  db2jcc_applica 8086       ::ffff:192.168.124.41.56956.180409053915                       APPDB    1    
+DB2I4JN  FacePayConsole 8770       *LOCAL.db2i4jn.180409072500                                    APPDB    1    
+DB2I4JN  FacePayConsole 8745       *LOCAL.db2i4jn.180409072435                                    JNDB     1    
