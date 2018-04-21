@@ -293,3 +293,6 @@ DB2I4JN  db2jcc_applica 8732       ::ffff:192.168.124.41.59248.180409070957     
 DB2I4JN  db2jcc_applica 8086       ::ffff:192.168.124.41.56956.180409053915                       APPDB    1    
 DB2I4JN  FacePayConsole 8770       *LOCAL.db2i4jn.180409072500                                    APPDB    1    
 DB2I4JN  FacePayConsole 8745       *LOCAL.db2i4jn.180409072435                                    JNDB     1    
+
+时间转换函数
+CAST('%s' AS timestamp)
