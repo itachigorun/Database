@@ -296,3 +296,12 @@ DB2I4JN  FacePayConsole 8745       *LOCAL.db2i4jn.180409072435                  
 
 时间转换函数
 CAST('%s' AS timestamp)
+
+启动数据库：
+启动db2服务：db2start
+激活数据库实例：db2 activate database  <db_name>
+查看激活状态的数据库：db2 list active databases
+
+关闭数据库：
+失效数据库实例：db2 deactivate database <db_name>
+关闭数据库服务：db2stop
