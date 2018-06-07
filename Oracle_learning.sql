@@ -57,7 +57,7 @@ export PATH=$HOME/bin:$ORACLE_HOME/bin:${PATH}:
 export NLS_LANG="Simplified Chinese_CHINA.ZHS16GBK"
 export TNS_ADMIN=$ORACLE_HOME/network/admin
 export DISPLAY=localhost:0.0
-
+export NLS_LANG="SIMPLIFIED CHINESE_CHINA.ZHS16GBK"     //设置字符编码
 source .bash_profile生效
 
 6.
