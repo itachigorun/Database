@@ -78,3 +78,14 @@ GRANT CREATE ANY PROCEDURE TO fcs;
 GRANT DEBUG ANY PROCEDURE TO fcs;
 GRANT DEBUG CONNECT SESSION TO fcs;
 GRANT EXECUTE ANY PROCEDURE TO fcs;
+
+5.查询用户权限
+
+5.1查询所有用户
+select * from all_users;
+
+5.2查询用户权限
+select * from user_sys_privs;
+
+5.3赋予username用户对tmpname表空间的操作权限
+alter user username quota unlimited on tmpname;
