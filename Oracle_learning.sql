@@ -192,3 +192,7 @@ order by 2;
 
 count(1) 和 group by 的联合使用
 select ticket_id,txn_date, count(1) from tbl_dtl group by ticket_id,txn_date having count(1)>1
+
+3.查询数据库版本
+SQL>
+select* from v$version;
