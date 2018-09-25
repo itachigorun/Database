@@ -196,3 +196,9 @@ select ticket_id,txn_date, count(1) from tbl_dtl group by ticket_id,txn_date hav
 3.查询数据库版本
 SQL>
 select* from v$version;
+
+4.查看当前登录的用户的表
+SQL>select table_name from user_tables;
+
+TEST为用户名，用户名必须是大写。
+select * from all_tables where owner='TEST';
