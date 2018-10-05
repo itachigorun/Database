@@ -198,7 +198,60 @@ SQL>
 select* from v$version;
 
 4.查看当前登录的用户的表
-SQL>select table_name from user_tables;
+SQL>
+select table_name from user_tables;
+
+5.查看当前用户sequence
+SQL>
+select sequence_name from user_sequences;
 
 TEST为用户名，用户名必须是大写。
 select * from all_tables where owner='TEST';
+
+--查看用户和默认表空间的关系
+select username,default_tablespace from dba_users;
+--查看当前用户能访问的表
+select * from user_tables; 
+--Oracle查询用户表
+select * from user_all_tables;
+
+--Oracle查询用户视图
+select * from user_views;
+--查询所有函数和储存过程：
+select * from user_source;
+--查询所有用户：
+select * from all_users;
+--select * from dba_users
+--查看当前用户连接：
+select * from v$Session;
+--查看用户角色
+SELECT * FROM USER_ROLE_PRIVS;
+--查看当前用户权限：
+select * from session_privs;
+--查看所有用户所拥有的角色
+SELECT * FROM DBA_ROLE_PRIVS;
+--查看所有角色
+select * from dba_roles;
+--查看数据库名
+SELECT NAME FROM V$DATABASE;
+--查看所有表空间使用情况
+select a.file_id "FileNo",
+       a.tablespace_name "Tablespace_name",
+       a.bytes "Bytes",
+       a.bytes - sum(nvl(b.bytes, 0)) "Used",
+       sum(nvl(b.bytes, 0)) "Free",
+       sum(nvl(b.bytes, 0)) / a.bytes * 100 "%free"
+  from dba_data_files a, dba_free_space b
+ where a.file_id = b.file_id(+)
+ group by a.tablespace_name, a.file_id, a.bytes
+ order by a.tablespace_name;
+
+ 6.解锁表
+ --查询被锁的表
+select b.owner,b.object_name,a.session_id,a.locked_mode from v$locked_object a,dba_objects b where b.object_id = a.object_id;
+
+--查看是哪个session引起的
+select b.username,b.sid,b.serial#,logon_time from  v$locked_object a,v$session b where a.session_id = b.sid order by b.logon_time;
+
+--杀掉对应进程即解锁
+alter system kill session'866,20840'    --其中866是sid 20840是serial#
