@@ -255,3 +255,8 @@ select b.username,b.sid,b.serial#,logon_time from  v$locked_object a,v$session b
 
 --杀掉对应进程即解锁
 alter system kill session'866,20840'    --其中866是sid 20840是serial#
+
+1、系统权限分类：
+DBA: 拥有全部特权，是系统最高权限，只有DBA才可以创建数据库结构。
+RESOURCE:拥有Resource权限的用户只可以创建实体，不可以创建数据库结构。
+CONNECT:拥有Connect权限的用户只可以登录Oracle，不可以创建实体，不可以创建数据库结构。
