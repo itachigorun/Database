@@ -305,3 +305,7 @@ CAST('%s' AS timestamp)
 关闭数据库：
 失效数据库实例：db2 deactivate database <db_name>
 关闭数据库服务：db2stop
+
+
+db2客户端配置
+db2 catalog tcpip node accdb  remote 10.1.1.1 server 50000 
