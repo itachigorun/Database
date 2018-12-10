@@ -308,4 +308,15 @@ CAST('%s' AS timestamp)
 
 
 db2客户端配置
-db2 catalog tcpip node accdb  remote 10.1.1.1 server 50000 
+db2 catalog tcpip node accdb  remote 1.1.1.1 server 50000
+db2 catalog db fcsdb as fcsdb at node accdb
+
+db2 catalog tcpip node node_name remote server_ip server server_port
+node_name:所要编目的节点名，任意起。节点名在一台机器上必须是唯一的，不能跟已有的节点名重复。（可通过db2 list node directory查看）可输入纯字母或字母与数字的组合，字母不区分大小写。注意不能命名为“DB2”，且不支持特殊字符。节点目录用于存储远程数据库的所有连通性信息。
+server_ip:所要编目的服务器IP地址。
+server_port:所要编目的服务器端口号，默认为50000。
+
+db2 catalog db db_name as db_alias at node node_name
+db_name:所要编目的数据库名称。
+db_alias:数据库编目到客户端所用的别名。
+node_name:所要编目的数据库所在的节点名。
