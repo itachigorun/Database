@@ -52,3 +52,18 @@ DB2_db2i4jn 60000/tcp #tcp/ip services for db2i4jn
 su - db2i4jn
 #db2 connect to jndb user db2i4jn using db2i4jn
 #db2 -tf jndb_c_server.sql
+
+13.DB2的schema对象
+CREATE SCHEMA "db2inst1" AUTHORIZATION "db2inst1";
+Oracle数据库是数据库本身管理用户的，即每一个要访问Oracle的用户都必须先在Oracle数据库里创建用户，而DB2并没有自己的用户账号，DB2
+使用的是操作系统的账号，DB2只需要对相应的操作系统账户进行授权，而该操作系统账户就可以访问DB2数据库。
+用一台机器上可以安装多个DB2 instance
+同一个instance下可以安装多个database
+同一个database下可以配置多个schema
+所有的数据库对象包括table、view、sequence、etc都必须属于某一个schema，另外，database是一个connnection的目标对象，也就是说
+用户发起一个DB2连接时，指的是连接到一个database，而不是连接到一个instance，也不是连接到一个schema。但是DB2的启动关闭是以instance
+为单位的，可以启动一个instance，或者关停一个instance。但不可以启动或者关停一个database或者一个schema。
+每一个DB2授权用户都有一个对应的schema，其名字和用户名相同，当然也可以再创建新的schema，这样DB2中的user和schema是一种一对多的关系，
+而Oracle中是一对一的关系。每一个schema都有一个属主（即所属用户），这个属主在创建schema的时候指定，如果没有指定值，缺省即当前用户，
+也就是说谁创建了这个schema，那么这个schema就属于谁。
+一个linux用户对应一个实例，这个用户可以访问实例下的所有数据库。
