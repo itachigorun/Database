@@ -299,11 +299,11 @@ CAST('%s' AS timestamp)
 
 启动数据库：
 启动db2服务：db2start
-激活数据库实例：db2 activate database  <db_name>
+显示激活数据库实例：db2 activate database  <db_name>
 查看激活状态的数据库：db2 list active databases
 
 关闭数据库：
-失效数据库实例：db2 deactivate database <db_name>
+关掉显示激活数据库：db2 deactivate database <db_name>
 关闭数据库服务：db2stop
 
 
@@ -330,3 +330,14 @@ node_name:所要编目的数据库所在的节点名。
 db2 update db cfg for dbname using LOGPRIMARY 6
 3.修改辅助日志文件个数
 db2 update db cfg for dbname using LOGSECOND 10
+
+查看当前连接数，sample为数据库名
+db2 list applications for db sample
+db2 list applications for db sample show detail
+连接数据库
+db2 connect to dbname user username using passwd
+设置最大连接数
+db2 update db cfg using MAXAPPLS number
+
+db2 get db cfg for sample
+sample 为数据库名
