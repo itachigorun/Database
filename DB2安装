@@ -1,5 +1,7 @@
 1. tar -zxvf v9.7fp5_linuxx64_server.tar.gz
 2. cd server 
+. /opt/server/db2prereqcheck   检查缺少的库
+
    ./db2_install(命令安装)
 要选择另一个目录用于安装吗？[yes/no]
 
@@ -14,6 +16,7 @@ EXP
 ./db2setup(图形安装)
 
 3. 安装license
+
 4.实例所有者#groupadd db2i4jn
 受防护用户#groupadd db2fencl
 db2管理员（DAS）#groupadd db2admin
@@ -46,6 +49,10 @@ DB2_db2i4jn 60000/tcp #tcp/ip services for db2i4jn
 ./createTableSpace.sh
 
 11.重启db2
+db2admin用户
+#db2admin start
+
+
 #db2stop force
 #db2start
 
