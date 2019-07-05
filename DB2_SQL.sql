@@ -341,3 +341,31 @@ db2 update db cfg using MAXAPPLS number
 
 db2 get db cfg for sample
 sample 为数据库名
+
+
+查看db2版本
+db2 level
+
+更改字符集1386
+export DB2CODEPAGE=1386
+db2 terminate
+
+
+导入导出数据    export DB2CODEPAGE=1208
+db2move fcsdb export –u db2i4jn –p db2i4jn 
+db2move fcsdb import –u db2i4jn –p db2i4jn 
+
+
+导出DDL语句
+db2look -d dbname -e -a -x -i username -w password -o ddlfile.sql
+--执行sql语句方式 db2 -svtf step04.CreateNickName.sql
+
+
+查看实例配置文件
+# db2 get dbm cfg
+
+查看数据库配置参数信息
+# db2 get db cfg for fcsdb
+
+查看数据库的名字	
+# db2 list db directory
