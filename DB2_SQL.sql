@@ -320,7 +320,9 @@ db2 catalog db db_name as db_alias at node node_name
 db_name:所要编目的数据库名称。
 db_alias:数据库编目到客户端所用的别名。
 node_name:所要编目的数据库所在的节点名。
-
+删除编目
+uncatalog node test 
+uncatalog database test
 
 
 修改数据库配置参数 ：db2 update db cfg for <dbname> using <p> <v>
