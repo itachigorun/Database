@@ -412,3 +412,5 @@ SQL>Select Cast(Systimestamp As Date) From dual;
 date ——>timestamp：
 SQL>select to_timestamp(to_char(sysdate,'yyyy-mm-dd hh24:mi:ss'),'yyyy-mm-dd hh24:mi:ss') from dual
 SQL>Select to_timestamp('2006-01-01 12:10:10.1','yyyy-mm-dd hh24:mi:ss.ff') From dual;
+
+16.over函数
