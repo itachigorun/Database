@@ -1,0 +1,93 @@
+创建分区表语句,exclusive表示不包含后面一天, inclusive表示包含，默认,table和index表空间要分布于不同的表空间,
+不同分区的页大小需要相同
+1.
+CREATE TABLE  TABLE_TEST_1(
+         DATADATE date NOT NULL ,
+         DATA1 VARCHAR(10) not null primary key,
+         DATA2 VARCHAR(10)
+     ) in "TBS_TRANS_SUM" index in "TBS_FCS_SUM"
+     PARTITION BY RANGE(DATADATE)
+     (STARTING ('2019-01-01') ENDING ('2019-12-31')  every 1 month)
+
+2.
+CREATE TABLE  TABLE_TEST_2(
+         DATADATE VARCHAR(8) NOT NULL,
+         DATA1 VARCHAR(10) not null primary key,
+         DATA2 VARCHAR(10)
+     ) 
+     PARTITION BY RANGE(DATADATE)
+     (STARTING(MINVALUE) ENDING('20180101') EXCLUSIVE IN "TBS_TRANS_SUM" index in TBS_FCS_SUM,
+      STARTING('20180101') inclusive ENDING('20180102') EXCLUSIVE IN "TBS_FCS_DTL" index in TBS_FCS_SUM)
+
+
+分区表添加分区
+ALTER TABLE TABLE_TEST_1 ADD PARTITION P20180101 STARTING '20180101' ENDING '20180201' exclusive IN TBS_TRANS_SUM;
+
+删除分区表,临时表不需要创建
+ALTER TABLE TABLE_TEST_1 DETACH PARTITION P20180101 INTO TABLE TMP_TEST_P20180101
+DROP TABLE TMP_TEST_P20180101
+
+
+创建分区索引
+create index idx_PART_1 on TABLE_TEST (DATADATE) partitioned
+创建非分区索引，主键索引是非分区索引
+create index idx_PART_1 on TABLE_TEST (DATADATE) not partitioned
+
+
+查询表分区信息
+SELECT * FROM SYSCAT.DATAPARTITIONS WHERE TABNAME='TABLE_TEST'
+
+查询分区表所在表空间,先查出spaceid，再根据id去查表空间
+select TBSPACEID from syscat.datapartitions where tabname='TABLE_TEST' 
+db2 list tablespaces
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------ORACLE--------------------------------
+创建分区表语句
+1.
+CREATE TABLE  TABLE_TEST_1(
+         DATADATE date NOT NULL primary key,
+         DATA1 VARCHAR(10),
+         DATA2 VARCHAR(10)
+     ) in "TBS_TRANS_SUM"
+     PARTITION BY RANGE(DATADATE)
+     (STARTING ('2019-01-01') ENDING ('2019-12-31')  every 1 month)
+
+2.
+CREATE TABLE  TABLE_TEST_2(
+         DATADATE VARCHAR(8) NOT NULL,
+         DATA1 VARCHAR(10),
+         DATA2 VARCHAR(10)
+     ) in "TBS_TRANS_SUM"
+     PARTITION BY RANGE(DATADATE)
+     (STARTING(MINVALUE) ENDING('20180101') EXCLUSIVE IN "TBS_TRANS_SUM",
+      STARTING('20180101') ENDING('20180102') EXCLUSIVE IN "TBS_TRANS_SUM")
+
+
+分区表添加分区
+ALTER TABLE TABLE_TEST_1 ADD PARTITION P20180101 STARTING '20180101' ENDING '20180201' exclusive IN TBS_TRANS_SUM;
+alter table TABLE_TEST_1 add partition P20180101 values less than ('20140831') tablespace TBS_TRANS_SUM;
+删除分区表,临时表不需要创建
+alter table TABLE_TEST_1 drop partition P20180101;
+
+创建分区索引
+create index idx_PART_1 on TABLE_TEST (DATADATE) partitioned
+创建非分区索引
+create index idx_PART_1 on TABLE_TEST (DATADATE) not partitioned
+
+
+查询表分区信息
+SELECT * FROM SYSCAT.DATAPARTITIONS WHERE TABNAME='TABLE_TEST'
+
+查询分区表所在表空间,先查出spaceid，再根据id去查表空间
+select TBSPACEID from syscat.datapartitions where tabname='TABLE_TEST' 
+db2 list tablespaces
+
