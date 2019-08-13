@@ -1,35 +1,42 @@
-创建分区表语句,exclusive表示不包含后面一天, inclusive表示包含，默认,table和index表空间要分布于不同的表空间,
-不同分区的页大小需要相同
+创建分区表语句,exclusive表示不包含这一个值, inclusive表示包含，默认,table和index表空间要分布于不同的表空间,
+所有表空间都必须具有相同的页大小、扩展数据块大小、存储机制（DMS 或 SMS）和类型（REGULAR 或 LARGE），
+并且所有表空间都必须位于同一数据库分区组中。
 1.
 CREATE TABLE  TABLE_TEST_1(
          DATADATE date NOT NULL ,
          DATA1 VARCHAR(10) not null primary key,
          DATA2 VARCHAR(10)
-     ) in "TBS_TRANS_SUM" index in "TBS_FCS_SUM"
+     ) in "TBS_FCS_SUM" index in "TBS_FCS_DTL"
      PARTITION BY RANGE(DATADATE)
-     (STARTING ('2019-01-01') ENDING ('2019-12-31')  every 1 month)
+     (STARTING (MINVALUE)  ,
+     STARTING ('2019-01-01') ENDING ('2019-12-31') every 1 month ,
+     ENDING (MAXVALUE) )
 
 2.
-CREATE TABLE  TABLE_TEST_2(
+TP —— 表分区
+CREATE TABLE  TABLE_TEST(
          DATADATE VARCHAR(8) NOT NULL,
          DATA1 VARCHAR(10) not null primary key,
          DATA2 VARCHAR(10)
-     ) 
+     ) IN TBS_FCS_SUM index in TBS_FCS_SUM
      PARTITION BY RANGE(DATADATE)
-     (STARTING(MINVALUE) ENDING('20180101') EXCLUSIVE IN "TBS_TRANS_SUM" index in TBS_FCS_SUM,
-      STARTING('20180101') inclusive ENDING('20180102') EXCLUSIVE IN "TBS_FCS_DTL" index in TBS_FCS_SUM)
-
-
+     (STARTING(MINVALUE) IN TBS_FCS_SUM index in TBS_FCS_SUM,
+      STARTING('20180101') INCLUSIVE ENDING('20180201') EXCLUSIVE IN TBS_FCS_SUM index in TBS_FCS_SUM,
+      STARTING('20180201') INCLUSIVE ENDING('20180301') EXCLUSIVE IN TBS_FCS_SUM index in TBS_FCS_SUM,
+      ENDING(MAXVALUE) IN TBS_FCS_DTL index in TBS_FCS_SUM)
+  
+ 
 分区表添加分区
-ALTER TABLE TABLE_TEST_1 ADD PARTITION P20180101 STARTING '20180101' ENDING '20180201' exclusive IN TBS_TRANS_SUM;
+ALTER TABLE TABLE_TEST ADD PARTITION P20180101 STARTING '20180101' ENDING '20180201' exclusive IN TBS_TRANS_SUM;
 
-删除分区表,临时表不需要创建
-ALTER TABLE TABLE_TEST_1 DETACH PARTITION P20180101 INTO TABLE TMP_TEST_P20180101
+删除分区表,临时表不需要创建,DETACH操作是异步的，所以执行卸载后立马执行删除操作容易出现删除失败
+ALTER TABLE TABLE_TEST DETACH PARTITION P20180101 INTO TABLE TMP_TEST_P20180101
 DROP TABLE TMP_TEST_P20180101
 
 
+索引分区的缺省位置与它所引用的数据分区的位置相同。
 创建分区索引
-create index idx_PART_1 on TABLE_TEST (DATADATE) partitioned
+create index idx_PART_1 on TABLE_TEST (DATADATE) partitioned 
 创建非分区索引，主键索引是非分区索引
 create index idx_PART_1 on TABLE_TEST (DATADATE) not partitioned
 
