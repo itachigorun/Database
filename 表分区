@@ -60,41 +60,48 @@ db2 list tablespaces
 -----------------------------------------------------------ORACLE--------------------------------
 创建分区表语句
 1.
-CREATE TABLE  TABLE_TEST_1(
-         DATADATE date NOT NULL primary key,
-         DATA1 VARCHAR(10),
-         DATA2 VARCHAR(10)
-     ) in "TBS_TRANS_SUM"
-     PARTITION BY RANGE(DATADATE)
-     (STARTING ('2019-01-01') ENDING ('2019-12-31')  every 1 month)
+CREATE TABLE ORDER_ACTIVITIES
+ (
+     ORDER_ID  NUMBER(7) NOT NULL,
+     ORDER_DATE    DATE,
+     TOTAL_AMOUNT NUMBER,
+     CUSTOTMER_ID NUMBER(7),
+     PAID           CHAR(1)
+ )
+  PARTITION BY RANGE (ORDER_DATE)
+ (
+   PARTITION ORD_ACT_PART01 VALUES LESS THAN (TO_DATE('01- MAY -2003','DD-MON-YYYY')),
+   PARTITION ORD_ACT_PART02 VALUES LESS THAN (TO_DATE('01-JUN-2003','DD-MON-YYYY')) ,
+   PARTITION ORD_ACT_PART02 VALUES LESS THAN (TO_DATE('01-JUL-2003','DD-MON-YYYY'))
+ );
 
 2.
-CREATE TABLE  TABLE_TEST_2(
-         DATADATE VARCHAR(8) NOT NULL,
-         DATA1 VARCHAR(10),
-         DATA2 VARCHAR(10)
-     ) in "TBS_TRANS_SUM"
-     PARTITION BY RANGE(DATADATE)
-     (STARTING(MINVALUE) ENDING('20180101') EXCLUSIVE IN "TBS_TRANS_SUM",
-      STARTING('20180101') ENDING('20180102') EXCLUSIVE IN "TBS_TRANS_SUM")
+CREATE TABLE RangeTable
+ (
+   idd   INT PRIMARY KEY ,
+   iNAME VARCHAR(10),
+   grade INT
+ )
+ PARTITION  BY  RANGE (grade)
+ (
+       PARTITION  part1 VALUES  LESS  THEN (1000) ,
+       PARTITION  part2 VALUES  LESS  THEN (MAXVALUE)
+ );
 
+3.查看分区情况
+select * from user_tab_partitions where table_name ='tableName';
 
-分区表添加分区
-ALTER TABLE TABLE_TEST_1 ADD PARTITION P20180101 STARTING '20180101' ENDING '20180201' exclusive IN TBS_TRANS_SUM;
-alter table TABLE_TEST_1 add partition P20180101 values less than ('20140831') tablespace TBS_TRANS_SUM;
-删除分区表,临时表不需要创建
-alter table TABLE_TEST_1 drop partition P20180101;
+4.查看分区数据
+select * from tablename partiton(p1);
 
-创建分区索引
-create index idx_PART_1 on TABLE_TEST (DATADATE) partitioned
-创建非分区索引
-create index idx_PART_1 on TABLE_TEST (DATADATE) not partitioned
-
-
-查询表分区信息
-SELECT * FROM SYSCAT.DATAPARTITIONS WHERE TABNAME='TABLE_TEST'
-
-查询分区表所在表空间,先查出spaceid，再根据id去查表空间
-select TBSPACEID from syscat.datapartitions where tabname='TABLE_TEST' 
-db2 list tablespaces
-
+5.创建分区索引
+create index grade_index on studentgrade(grade)
+    local      --根据表分区创建本地索引分区
+    (
+     partition p1,
+       partition p2,
+       partition p3
+     );
+     
+查看分区索引
+select * from user_ind_partitions;
